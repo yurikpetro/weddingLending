@@ -233,33 +233,6 @@
       pointer-events: none;
     }
 
-    /* Галерея: masonry через columns */
-    .masonry {
-      column-count: 2;
-      column-gap: 0.75rem;
-    }
-    @media (min-width: 768px) {
-      .masonry { column-count: 3; column-gap: 1rem; }
-    }
-    .masonry-item {
-      break-inside: avoid;
-      margin-bottom: 0.75rem;
-    }
-    @media (min-width: 768px) {
-      .masonry-item { margin-bottom: 1rem; }
-    }
-
-    /* Карточка галереи: сердечко при hover */
-    .gallery-card .heart-icon {
-      opacity: 0;
-      transform: scale(0.8);
-      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .gallery-card:hover .heart-icon {
-      opacity: 1;
-      transform: scale(1);
-    }
-
     /* Модалка: появление */
     @keyframes modalIn {
       from { opacity: 0; transform: scale(0.92) translateY(12px); }
@@ -346,7 +319,7 @@
       <div class="hero-blob-2" aria-hidden="true"></div>
       <div
               class="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full bg-cover bg-center shadow-card ring-[3px] ring-white ring-offset-4 ring-offset-parchment transition-transform duration-500 hover:scale-[1.02]"
-              style="background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=900&q=85');"
+              style="background-image: url('https://i.postimg.cc/FHwcRb74/image.png');"
               role="img"
               aria-label="Фото пары"
       ></div>
@@ -554,66 +527,6 @@
           Подтверждаю присутствие
         </button>
       </form>
-    </div>
-  </div>
-</section>
-
-<!-- ========== ГАЛЕРЕЯ ========== -->
-<section id="gallery" class="py-20 md:py-28 px-5 ref-pattern-bg border-t border-mauve/5">
-  <div class="max-w-5xl mx-auto">
-    <h2 class="font-display text-4xl md:text-5xl text-center text-ink mb-4">Моменты счастья</h2>
-    <div class="w-24 h-px bg-gradient-to-r from-transparent via-mauve/45 to-transparent mx-auto mb-12"></div>
-
-    <div class="masonry">
-      <!-- 8 placeholder-карточек: замените background-image на свои фото -->
-      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-        <div class="aspect-[3/4] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=600&q=80');"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <span class="heart-icon text-4xl text-mauve drop-shadow-lg" aria-hidden="true">♥</span>
-        </div>
-      </div>
-      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-        <div class="aspect-square bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80');"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-        </div>
-      </div>
-      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-        <div class="aspect-[4/5] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80');"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-        </div>
-      </div>
-      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-        <div class="aspect-[5/6] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&q=80');"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-        </div>
-      </div>
-      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-        <div class="aspect-square bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1522413452208-996ff3f3e740?w=600&q=80');"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-        </div>
-      </div>
-      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-        <div class="aspect-[3/4] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=600&q=80');"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-        </div>
-      </div>
-      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-        <div class="aspect-[4/3] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600&q=80');"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-        </div>
-      </div>
-      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-        <div class="aspect-[3/5] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80');"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-        </div>
-      </div>
     </div>
   </div>
 </section>
