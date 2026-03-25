@@ -23,9 +23,10 @@
      В скрипте Apps Script примите POST (JSON), запишите строку в таблицу.
      Пример обработчика см. в комментариях внизу этого файла (в конце <script>).
 
-  4. МЕДИА
-     - В hero круглое фото: inline style у блока с rounded-full (рядом с комментарием «Круглое фото пары»)
-     - В секции «О нас» и галерее — свои изображения
+  4. МЕДИА (папка /images/ — локальные файлы, быстрее на GitHub Pages)
+     - images/hero-couple.png — круглое фото в hero (замените своим)
+     - images/story.jpg — блок «О нас»
+     - images/qr-invite.png — QR в подвале (перегенерируйте под URL сайта или замените файл)
 
   5. QR-КОД В ПОДВАЛЕ
      - Замените src у <img id="invite-qr"> на ссылку на сгенерированный QR (или data URL)
@@ -365,7 +366,7 @@
       <div class="hero-blob-2" aria-hidden="true"></div>
       <div
               class="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full bg-cover bg-center shadow-card ring-[3px] ring-white ring-offset-4 ring-offset-parchment transition-transform duration-500 hover:scale-[1.02]"
-              style="background-image: url('https://i.postimg.cc/FHwcRb74/image.png');"
+              style="background-image: url('images/hero-couple.png');"
               role="img"
               aria-label="Фото пары"
       ></div>
@@ -393,7 +394,7 @@
       <div class="flex-1 order-1 md:order-2 w-full max-w-md">
         <div
                 class="aspect-[4/5] rounded-3xl bg-cover bg-center shadow-card ring-1 ring-mauve/10 transition-transform duration-500 hover:scale-[1.02]"
-                style="background-image: linear-gradient(160deg, rgba(250,246,240,0.15), rgba(182,115,129,0.12)), url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800&q=80');"
+                style="background-image: linear-gradient(160deg, rgba(250,246,240,0.15), rgba(182,115,129,0.12)), url('images/story.jpg');"
                 role="img"
                 aria-label="Фото пары"
         ></div>
@@ -589,7 +590,7 @@
     <div class="mt-10 inline-block p-4 bg-white/80 rounded-2xl shadow-soft ring-1 ring-mauve/10">
       <p class="text-xs text-ink/50 mb-2 uppercase tracking-wider">Приглашение — QR</p>
       <!-- Замените src на свой QR (например ссылка на эту страницу или PDF) -->
-      <img id="invite-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https%3A%2F%2Fexample.com" width="140" height="140" alt="QR-код приглашения" class="mx-auto rounded-lg opacity-90" />
+      <img id="invite-qr" src="images/qr-invite.png" width="140" height="140" alt="QR-код приглашения" class="mx-auto rounded-lg opacity-90" />
     </div>
   </div>
 </footer>
@@ -628,7 +629,7 @@
     weddingDateDisplay: '6 августа 2026',
     city: 'Ставрополь',
     /** Строка под «Место:» в hero (город, зал — как удобно) */
-    venueLine: 'Ставрополь',
+    venueLine: 'г.Ставрополь',
     /** Короткая фраза рукописным шрифтом под датой */
     meetLine: 'Увидимся на нашей свадьбе!',
 
