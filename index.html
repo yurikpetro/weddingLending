@@ -544,8 +544,8 @@
 </section>
 
 <!-- ========== RSVP (референс: шапка мальва + белая карточка) ========== -->
-<section id="rsvp" class="py-20 md:py-28 px-5 ref-pattern-bg">
-  <div class="max-w-xl mx-auto rounded-3xl overflow-hidden shadow-lift ring-1 ring-mauve/10">
+<section id="rsvp" class="py-20 md:py-28 px-4 sm:px-5 ref-pattern-bg">
+  <div class="max-w-6xl mx-auto rounded-3xl overflow-hidden shadow-lift ring-1 ring-mauve/10">
     <div class="bg-mauve px-6 py-5 text-center">
       <h2 class="font-display text-xl sm:text-2xl md:text-3xl font-semibold text-white tracking-[0.15em] uppercase">
         Регистрация гостя
@@ -558,75 +558,111 @@
         Чтобы мы знали, что вы будете с нами в этот особенный день
       </p>
 
-      <form id="rsvp-form" class="space-y-5">
-        <div>
-          <label for="fio" class="block text-sm font-medium text-ink/75 mb-2">ФИО <span class="text-mauve">*</span></label>
-          <input type="text" id="fio" name="fio" required maxlength="200"
-                 class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Иванова Анна Сергеевна" />
-        </div>
-
-        <div>
-          <label for="phone" class="block text-sm font-medium text-ink/75 mb-2">Телефон для связи <span class="text-mauve">*</span></label>
-          <input type="tel" id="phone" name="phone" required inputmode="numeric" autocomplete="tel"
-                 class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="+7 (___) ___-__-__" />
-        </div>
-
-        <div>
-          <label for="guests" class="block text-sm font-medium text-ink/75 mb-2">Количество гостей <span class="text-mauve">*</span></label>
-          <select id="guests" name="guests" required
-                  class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow">
-            <option value="" disabled selected>Выберите</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4+">4+</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="alcohol" class="block text-sm font-medium text-ink/75 mb-2">Предпочитаемый алкоголь <span class="text-mauve">*</span></label>
-          <select id="alcohol" name="alcohol" required
-                  class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow">
-            <option value="" disabled selected>Выберите</option>
-            <option value="Шампанское / игристое">Шампанское / игристое</option>
-            <option value="Вино (красное/белое)">Вино (красное/белое)</option>
-            <option value="Крепкие напитки">Крепкие напитки</option>
-            <option value="Безалкогольные напитки">Безалкогольные напитки</option>
-          </select>
-        </div>
-
-        <fieldset>
-          <legend class="text-sm font-medium text-ink/75 mb-3">Предпочтения по еде <span class="text-mauve">*</span> <span class="text-ink/45 font-normal">(можно несколько)</span></legend>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <label class="flex items-center gap-3 cursor-pointer group p-3 rounded-2xl border border-mauve/20 bg-parchment/30 hover:border-mauve/45 hover:bg-mauve/5 transition-colors">
-              <input type="checkbox" name="food" value="Мясо" class="rounded-full border-mauve/40 text-mauve focus:ring-mauve w-4 h-4" />
-              <span>Мясо</span>
-            </label>
-            <label class="flex items-center gap-3 cursor-pointer group p-3 rounded-2xl border border-mauve/20 bg-parchment/30 hover:border-mauve/45 hover:bg-mauve/5 transition-colors">
-              <input type="checkbox" name="food" value="Рыба" class="rounded-full border-mauve/40 text-mauve focus:ring-mauve w-4 h-4" />
-              <span>Рыба</span>
-            </label>
-            <label class="flex items-center gap-3 cursor-pointer group p-3 rounded-2xl border border-mauve/20 bg-parchment/30 hover:border-mauve/45 hover:bg-mauve/5 transition-colors">
-              <input type="checkbox" name="food" value="Вегетарианское" class="rounded-full border-mauve/40 text-mauve focus:ring-mauve w-4 h-4" />
-              <span>Вегетарианское</span>
-            </label>
-            <label class="flex items-center gap-3 cursor-pointer group p-3 rounded-2xl border border-mauve/20 bg-parchment/30 hover:border-mauve/45 hover:bg-mauve/5 transition-colors">
-              <input type="checkbox" name="food" value="Всё ем" class="rounded-full border-mauve/40 text-mauve focus:ring-mauve w-4 h-4" />
-              <span>Всё ем</span>
-            </label>
+      <form id="rsvp-form" class="space-y-4">
+        <!-- Три колонки: контакты | участие + гости | еда + алкоголь — без «дыр» от разной высоты строк -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 items-start">
+          <!-- Колонка 1: текстовые поля -->
+          <div class="flex flex-col gap-3 min-w-0">
+            <div>
+              <label for="fio" class="block text-sm font-medium text-ink/75 mb-1.5">ФИО <span class="text-mauve">*</span></label>
+              <input type="text" id="fio" name="fio" required maxlength="200"
+                     class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Иванова Анна Сергеевна" />
+            </div>
+            <div>
+              <label for="phone" class="block text-sm font-medium text-ink/75 mb-1.5">Телефон для связи <span class="text-mauve">*</span></label>
+              <input type="tel" id="phone" name="phone" required inputmode="numeric" autocomplete="tel"
+                     class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="+7 (___) ___-__-__" />
+            </div>
+            <div>
+              <label for="song" class="block text-sm font-medium text-ink/75 mb-1.5">Песня для танца <span class="text-ink/45 font-normal">(необязательно)</span></label>
+              <input type="text" id="song" name="song" maxlength="300"
+                     class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Исполнитель — название" />
+            </div>
           </div>
-        </fieldset>
 
-        <div>
-          <label for="song" class="block text-sm font-medium text-ink/75 mb-2">Песня для танца <span class="text-ink/45 font-normal">(необязательно)</span></label>
-          <input type="text" id="song" name="song" maxlength="300"
-                 class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Исполнитель — название" />
+          <!-- Колонка 2: участие + количество гостей -->
+          <div class="flex flex-col gap-3 min-w-0 md:col-span-1">
+            <fieldset class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
+              <legend class="px-1 text-sm font-medium text-ink/75">Подтверждение участия <span class="text-mauve">*</span></legend>
+              <div class="mt-1.5 space-y-1.5">
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="radio" name="attendance" value="Да" required class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm text-ink/85">Да, буду</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="radio" name="attendance" value="Нет" class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm text-ink/85">Нет, не смогу</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
+              <label class="block text-sm font-medium text-ink/75 mb-2">Количество гостей <span class="text-mauve">*</span> <span class="text-ink/40 font-normal text-xs">(макс. 5)</span></label>
+              <input type="hidden" id="guests" name="guests" value="1" />
+              <div class="flex items-center gap-3">
+                <button type="button" id="guests-minus" class="h-10 w-10 rounded-full bg-mauve/15 text-mauve text-xl leading-none hover:bg-mauve/25 transition-colors">−</button>
+                <div id="guests-display" class="h-10 min-w-[2.75rem] px-3 rounded-full border border-mauve/35 bg-white flex items-center justify-center text-base font-semibold text-ink">1</div>
+                <button type="button" id="guests-plus" class="h-10 w-10 rounded-full bg-mauve text-white text-xl leading-none hover:bg-mauvedark transition-colors">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Колонка 3: еда + алкоголь (на md занимает всю ширину второй строки) -->
+          <div class="flex flex-col gap-3 min-w-0 md:col-span-2 lg:col-span-1">
+            <fieldset class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
+              <legend class="px-1 text-sm font-medium text-ink/75">Желаемый тип блюда <span class="text-mauve">*</span></legend>
+              <div class="mt-1.5 space-y-1.5">
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="radio" name="food" value="Мясо" required class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm text-ink/85">Мясо</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="radio" name="food" value="Рыба" class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm text-ink/85">Рыба</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="radio" name="food" value="Птица" class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm text-ink/85">Птица</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="radio" name="food" value="Вегетарианское" class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm text-ink/85">Вегетарианское</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="radio" name="food" value="Всё ем" class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm text-ink/85">Всё ем</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
+              <legend class="px-1 text-sm font-medium text-ink/75">Предпочитаемый алкоголь <span class="text-mauve">*</span></legend>
+              <div class="mt-1.5 space-y-1.5">
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="radio" name="alcohol" value="Шампанское / игристое" required class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm text-ink/85">Шампанское / игристое</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="radio" name="alcohol" value="Вино (красное/белое)" class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm text-ink/85">Вино (красное/белое)</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="radio" name="alcohol" value="Крепкие напитки" class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm text-ink/85">Крепкие напитки</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="radio" name="alcohol" value="Безалкогольные напитки" class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm text-ink/85">Безалкогольные напитки</span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
         </div>
 
         <div>
-          <label for="comment" class="block text-sm font-medium text-ink/75 mb-2">Особые пожелания <span class="text-ink/45 font-normal">(необязательно)</span></label>
-          <textarea id="comment" name="comment" rows="4" maxlength="2000"
-                    class="w-full rounded-2xl border border-mauve/35 bg-parchment/50 px-5 py-3.5 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow resize-y placeholder:text-ink/35" placeholder="Аллергии, детское кресло, поздравление со сцены…"></textarea>
+          <label for="comment" class="block text-sm font-medium text-ink/75 mb-1.5">Особые пожелания <span class="text-ink/45 font-normal">(необязательно)</span></label>
+          <textarea id="comment" name="comment" rows="3" maxlength="2000"
+                    class="w-full rounded-2xl border border-mauve/35 bg-parchment/50 px-5 py-3 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow resize-y placeholder:text-ink/35" placeholder="Аллергии, детское кресло, поздравление со сцены…"></textarea>
         </div>
 
         <p id="form-error" class="hidden text-mauve text-sm text-center font-medium"></p>
@@ -967,26 +1003,54 @@
   const form = document.getElementById('rsvp-form');
   const formError = document.getElementById('form-error');
   const submitBtn = document.getElementById('submit-btn');
+  const guestsInput = document.getElementById('guests');
+  const guestsDisplay = document.getElementById('guests-display');
+  const guestsMinus = document.getElementById('guests-minus');
+  const guestsPlus = document.getElementById('guests-plus');
+
+  function getCheckedValue(name) {
+    const checked = form.querySelector('input[name="' + name + '"]:checked');
+    return checked ? checked.value : '';
+  }
+
+  function setGuestsValue(value) {
+    const v = Math.min(5, Math.max(1, value));
+    guestsInput.value = String(v);
+    guestsDisplay.textContent = String(v);
+    guestsMinus.disabled = v <= 1;
+    guestsPlus.disabled = v >= 5;
+    guestsMinus.classList.toggle('opacity-40', v <= 1);
+    guestsPlus.classList.toggle('opacity-40', v >= 5);
+  }
+
+  guestsMinus.addEventListener('click', function () {
+    setGuestsValue(Number(guestsInput.value) - 1);
+  });
+  guestsPlus.addEventListener('click', function () {
+    setGuestsValue(Number(guestsInput.value) + 1);
+  });
+  setGuestsValue(Number(guestsInput.value) || 1);
 
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     formError.classList.add('hidden');
 
-    const foodBoxes = form.querySelectorAll('input[name="food"]:checked');
-    if (foodBoxes.length === 0) {
-      formError.textContent = 'Пожалуйста, укажите хотя бы один вариант предпочтений по еде.';
+    const attendance = getCheckedValue('attendance');
+    const alcohol = getCheckedValue('alcohol');
+    const food = getCheckedValue('food');
+    if (!attendance || !alcohol || !food) {
+      formError.textContent = 'Пожалуйста, заполните обязательные поля в блоках выбора.';
       formError.classList.remove('hidden');
       return;
     }
 
-    const foodValues = Array.from(foodBoxes).map(function (cb) { return cb.value; });
-
     const payload = {
       fio: document.getElementById('fio').value.trim(),
       phone: document.getElementById('phone').value.trim(),
+      attendance: attendance,
       guests: document.getElementById('guests').value,
-      alcohol: document.getElementById('alcohol').value,
-      food: foodValues.join(', '),
+      alcohol: alcohol,
+      food: food,
       song: document.getElementById('song').value.trim(),
       comment: document.getElementById('comment').value.trim(),
       submittedAt: new Date().toISOString(),
@@ -1011,6 +1075,7 @@
         console.warn('[RSVP] Замените SCRIPT_URL (CONFIG.SCRIPT_URL) на URL вашего Google Apps Script для записи в таблицу.');
       }
       form.reset();
+      setGuestsValue(1);
       openThankModal();
     } catch (err) {
       formError.textContent = 'Не удалось отправить. Проверьте подключение к интернету и попробуйте снова.';
@@ -1028,7 +1093,7 @@
    *   let data = {};
    *   try { data = JSON.parse(e.postData.contents); } catch (x) { return ContentService.createTextOutput('bad json'); }
    *   sheet.appendRow([
-   *     new Date(), data.fio, data.phone, data.guests, data.alcohol, data.food, data.song, data.comment, data.submittedAt
+   *     new Date(), data.fio, data.phone, data.attendance, data.guests, data.alcohol, data.food, data.song, data.comment, data.submittedAt
    *   ]);
    *   return ContentService.createTextOutput(JSON.stringify({ ok: true })).setMimeType(ContentService.MimeType.JSON);
    * }
