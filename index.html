@@ -88,6 +88,50 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
+    /*
+     * Курсор «переплетённые кольца» (SVG data URI, цвет как у акцента сайта).
+     * Только при hover + мышь/тачпад: на смартфонах курсор не показывается — правило не мешает.
+     * Кольца повёрнуты на 45° вокруг центра холста; горячая точка — центр (16, 16).
+     */
+    @media (hover: hover) and (pointer: fine) {
+      body {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Cg transform='rotate(45 16 16)'%3E%3Ccircle cx='12' cy='18' r='6.5' stroke='%23B67381' stroke-width='1.6'/%3E%3Ccircle cx='20' cy='18' r='6.5' stroke='%23B67381' stroke-width='1.6'/%3E%3C/g%3E%3C/svg%3E") 16 16,
+          auto;
+      }
+      a[href],
+      button,
+      [role='button'],
+      input[type='submit'],
+      input[type='button'],
+      input[type='reset'],
+      label,
+      summary,
+      select {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Cg transform='rotate(45 16 16)'%3E%3Ccircle cx='12' cy='18' r='6.5' stroke='%23B67381' stroke-width='1.6'/%3E%3Ccircle cx='20' cy='18' r='6.5' stroke='%23B67381' stroke-width='1.6'/%3E%3C/g%3E%3C/svg%3E") 16 16,
+          pointer;
+      }
+      /* Карта: поверх стилей Leaflet */
+      .leaflet-grab {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Cg transform='rotate(45 16 16)'%3E%3Ccircle cx='12' cy='18' r='6.5' stroke='%23B67381' stroke-width='1.6'/%3E%3Ccircle cx='20' cy='18' r='6.5' stroke='%23B67381' stroke-width='1.6'/%3E%3C/g%3E%3C/svg%3E") 16 16,
+          grab !important;
+      }
+      .leaflet-dragging .leaflet-grab {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Cg transform='rotate(45 16 16)'%3E%3Ccircle cx='12' cy='18' r='6.5' stroke='%23B67381' stroke-width='1.6'/%3E%3Ccircle cx='20' cy='18' r='6.5' stroke='%23B67381' stroke-width='1.6'/%3E%3C/g%3E%3C/svg%3E") 16 16,
+          grabbing !important;
+      }
+      /* Текстовый курсор в полях ввода */
+      input[type='text'],
+      input[type='tel'],
+      input[type='email'],
+      input[type='search'],
+      input[type='url'],
+      input[type='password'],
+      input[type='number'],
+      textarea {
+        cursor: text;
+      }
+    }
+
     /* Плавный скролл в духе Lenis: нативный smooth + мягкость для поддерживающих браузеров */
     html {
       scroll-behavior: smooth;
@@ -110,10 +154,10 @@
     .ref-pattern-bg {
       background-color: #FAF6F0;
       background-image:
-        radial-gradient(ellipse 120% 80% at 0% 20%, rgba(182, 115, 129, 0.07) 0%, transparent 50%),
-        radial-gradient(ellipse 90% 70% at 100% 0%, rgba(201, 169, 98, 0.06) 0%, transparent 45%),
-        radial-gradient(circle at 15% 85%, rgba(182, 115, 129, 0.05) 0%, transparent 35%),
-        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M30 30c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm0 0c0 11 9 20 20 20s20-9 20-20-9-20-20-20-20 9-20 20z' stroke='%23B67381' stroke-opacity='.04'/%3E%3C/g%3E%3C/svg%3E");
+              radial-gradient(ellipse 120% 80% at 0% 20%, rgba(182, 115, 129, 0.07) 0%, transparent 50%),
+              radial-gradient(ellipse 90% 70% at 100% 0%, rgba(201, 169, 98, 0.06) 0%, transparent 45%),
+              radial-gradient(circle at 15% 85%, rgba(182, 115, 129, 0.05) 0%, transparent 35%),
+              url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M30 30c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm0 0c0 11 9 20 20 20s20-9 20-20-9-20-20-20-20 9-20 20z' stroke='%23B67381' stroke-opacity='.04'/%3E%3C/g%3E%3C/svg%3E");
     }
 
     /* Hero: лёгкая «вуаль» при скролле (теплый оттенок, не тёмный оверлей) */
@@ -234,737 +278,729 @@
 </head>
 <body class="font-body text-ink bg-cream antialiased overflow-x-hidden">
 
-  <!-- ========== HERO (референс: две колонки, пергамент, круглое фото) ========== -->
-  <section id="hero" class="relative min-h-screen ref-pattern-bg flex flex-col justify-center px-5 py-20 md:py-24 overflow-hidden">
-    <div class="hero-scroll-wash absolute inset-0 bg-gradient-to-b from-mauve/10 via-transparent to-mauve/5 pointer-events-none" aria-hidden="true"></div>
-    <div id="hearts-container" class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true"></div>
+<!-- ========== HERO (референс: две колонки, пергамент, круглое фото) ========== -->
+<section id="hero" class="relative min-h-screen ref-pattern-bg flex flex-col justify-center px-5 py-20 md:py-24 overflow-hidden">
+  <div class="hero-scroll-wash absolute inset-0 bg-gradient-to-b from-mauve/10 via-transparent to-mauve/5 pointer-events-none" aria-hidden="true"></div>
+  <div id="hearts-container" class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true"></div>
 
-    <div class="relative z-10 max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-      <!-- Текстовая колонка -->
-      <div class="text-center lg:text-left order-2 lg:order-1">
+  <div class="relative z-10 max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <!-- Текстовая колонка -->
+    <div class="text-center lg:text-left order-2 lg:order-1">
         <span class="inline-block px-5 py-2 rounded-full bg-mauve text-white text-xs md:text-sm font-semibold tracking-[0.2em] uppercase shadow-soft hover:scale-[1.02] transition-transform">
           Приглашение на свадьбу
         </span>
 
-        <div class="mt-6 flex justify-center lg:justify-start text-mauve" aria-hidden="true">
-          <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" class="opacity-90">
-            <circle cx="20" cy="28" r="11" stroke="currentColor" stroke-width="1.4"/>
-            <circle cx="32" cy="28" r="11" stroke="currentColor" stroke-width="1.4"/>
-            <path d="M26 12v4M26 8c-2 2-4 3.5-4 6a4 4 0 108 0c0-2.5-2-4-4-6z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
+      <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-mauve leading-tight mt-2">
+        <span id="hero-groom"></span>
+        <span class="font-normal italic text-dusty mx-2">&</span>
+        <span id="hero-bride"></span>
+      </h1>
 
-        <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-mauve leading-tight mt-2">
-          <span id="hero-groom"></span>
-          <span class="font-normal italic text-dusty mx-2">&</span>
-          <span id="hero-bride"></span>
-        </h1>
-
-        <div class="mt-8 space-y-3 text-ink/90">
-          <p class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 justify-center lg:justify-start">
-            <span class="font-script text-2xl md:text-3xl text-mauve">Дата:</span>
-            <span id="hero-date-text" class="font-body text-lg md:text-xl font-medium"></span>
-          </p>
-          <p class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 justify-center lg:justify-start">
-            <span class="font-script text-2xl md:text-3xl text-mauve">Место:</span>
-            <span id="hero-city" class="font-body text-lg md:text-xl font-medium"></span>
-          </p>
-          <p class="font-script text-2xl md:text-3xl text-mauve/90 pt-1" id="hero-meet">Увидимся на нашей свадьбе!</p>
-        </div>
-
-        <!-- Таймер: тонкие круги и двоеточия -->
-        <div class="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-1 sm:gap-2 text-ink">
-          <div class="cd-ring">
-            <span id="cd-days" class="font-display text-2xl md:text-3xl font-semibold text-mauve leading-none">00</span>
-            <span class="text-[10px] md:text-xs uppercase tracking-wider text-ink/50 mt-0.5">дней</span>
-          </div>
-          <span class="font-display text-mauve/60 text-xl md:text-2xl px-0.5">:</span>
-          <div class="cd-ring">
-            <span id="cd-hours" class="font-display text-2xl md:text-3xl font-semibold text-mauve leading-none">00</span>
-            <span class="text-[10px] md:text-xs uppercase tracking-wider text-ink/50 mt-0.5">часов</span>
-          </div>
-          <span class="font-display text-mauve/60 text-xl md:text-2xl px-0.5">:</span>
-          <div class="cd-ring">
-            <span id="cd-mins" class="font-display text-2xl md:text-3xl font-semibold text-mauve leading-none">00</span>
-            <span class="text-[10px] md:text-xs uppercase tracking-wider text-ink/50 mt-0.5">мин</span>
-          </div>
-          <span class="font-display text-mauve/60 text-xl md:text-2xl px-0.5">:</span>
-          <div class="cd-ring">
-            <span id="cd-secs" class="font-display text-2xl md:text-3xl font-semibold text-mauve leading-none">00</span>
-            <span class="text-[10px] md:text-xs uppercase tracking-wider text-ink/50 mt-0.5">сек</span>
-          </div>
-        </div>
-
-        <a
-          href="#rsvp"
-          class="cta-pulse inline-flex items-center justify-center gap-2 mt-10 px-8 py-4 rounded-full bg-mauve text-white font-semibold text-base md:text-lg tracking-wide shadow-lift hover:bg-mauvedark hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 mx-auto lg:mx-0"
-        >
-          <span>Принять приглашение</span>
-          <span class="text-xl leading-none" aria-hidden="true">♥</span>
-        </a>
-      </div>
-
-      <!-- Круглое фото пары (замените url в style на своё фото) -->
-      <div class="relative flex justify-center order-1 lg:order-2">
-        <div class="hero-blob-1 rounded-full blur-2xl" aria-hidden="true"></div>
-        <div class="hero-blob-2" aria-hidden="true"></div>
-        <div
-          class="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full bg-cover bg-center shadow-card ring-[3px] ring-white ring-offset-4 ring-offset-parchment transition-transform duration-500 hover:scale-[1.02]"
-          style="background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=900&q=85');"
-          role="img"
-          aria-label="Фото пары"
-        ></div>
-      </div>
-    </div>
-
-    <a href="#story" class="absolute bottom-6 left-1/2 -translate-x-1/2 text-mauve/50 hover:text-mauve transition-colors z-10" aria-label="Листать ниже">
-      <span class="block animate-bounce text-2xl">↓</span>
-    </a>
-  </section>
-
-  <!-- ========== О НАС ========== -->
-  <section id="story" class="py-20 md:py-28 px-5 ref-pattern-bg border-y border-mauve/5">
-    <div class="max-w-5xl mx-auto">
-      <h2 class="font-display text-4xl md:text-5xl text-center text-ink mb-4">Наша история</h2>
-      <div class="w-24 h-px bg-gradient-to-r from-transparent via-mauve/50 to-transparent mx-auto mb-12"></div>
-
-      <div class="flex flex-col md:flex-row gap-10 md:gap-16 items-center">
-        <div class="flex-1 order-2 md:order-1 space-y-4 text-ink/85 text-lg leading-relaxed">
-          <p>
-            Дорогие друзья и близкие, мы с радостью приглашаем вас разделить с нами самый важный день в нашей жизни — день нашей свадьбы!
-          </p>
-          <p class="font-script text-2xl text-mauve">С нетерпением ждём встречи…</p>
-        </div>
-        <div class="flex-1 order-1 md:order-2 w-full max-w-md">
-          <div
-            class="aspect-[4/5] rounded-3xl bg-cover bg-center shadow-card ring-1 ring-mauve/10 transition-transform duration-500 hover:scale-[1.02]"
-            style="background-image: linear-gradient(160deg, rgba(250,246,240,0.15), rgba(182,115,129,0.12)), url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800&q=80');"
-            role="img"
-            aria-label="Фото пары"
-          ></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== ПРОГРАММА + КАРТА (как в референсе: баннер + белая карточка) ========== -->
-  <section id="program" class="py-20 md:py-28 px-4 sm:px-5 ref-pattern-bg relative overflow-hidden">
-    <div class="max-w-5xl mx-auto relative z-10">
-      <!-- «Таблетка»-заголовок -->
-      <div class="flex flex-col items-center mb-10 md:mb-12">
-        <div class="text-mauve mb-2 opacity-80" aria-hidden="true">
-          <svg width="44" height="44" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="28" r="11" stroke="currentColor" stroke-width="1.3"/>
-            <circle cx="32" cy="28" r="11" stroke="currentColor" stroke-width="1.3"/>
-          </svg>
-        </div>
-        <div class="inline-flex items-center justify-center px-6 sm:px-10 py-3 rounded-full bg-mauve text-white shadow-lift">
-          <h2 class="font-display text-lg sm:text-xl md:text-2xl font-semibold tracking-[0.12em] uppercase text-center leading-snug">
-            Программа свадебного дня
-          </h2>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-3xl shadow-card p-6 md:p-10 lg:p-12 ring-1 ring-mauve/5">
-        <div class="grid lg:grid-cols-2 gap-10 lg:gap-12 items-start">
-          <!-- Таймлайн: время крупно слева, описание справа -->
-          <ul class="space-y-8">
-            <li class="flex gap-4 group">
-              <span class="flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-lg group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">⛪</span>
-              <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-                <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">09:00</span>
-                <span class="text-ink/65 text-sm md:text-base leading-relaxed">Венчание в церкви</span>
-              </div>
-            </li>
-            <li class="flex gap-4 group">
-              <span class="flex-shrink-0 w-10 h-10 rounded-full bg-parchment flex items-center justify-center text-lg group-hover:scale-110 transition-transform ring-1 ring-mauve/10" aria-hidden="true">🥂</span>
-              <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-                <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">13:30</span>
-                <span class="text-ink/65 text-sm md:text-base leading-relaxed">Сбор гостей</span>
-              </div>
-            </li>
-            <li class="flex gap-4 group">
-              <span class="flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-lg group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">💍</span>
-              <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-                <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">14:00</span>
-                <span class="text-ink/65 text-sm md:text-base leading-relaxed">Торжественная церемония бракосочетания в банкетном зале «Кристалл», г. Ставрополь</span>
-              </div>
-            </li>
-            <li class="flex gap-4 group">
-              <span class="flex-shrink-0 w-10 h-10 rounded-full bg-parchment flex items-center justify-center text-lg group-hover:scale-110 transition-transform ring-1 ring-mauve/10" aria-hidden="true">🍽️</span>
-              <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-                <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">15:00</span>
-                <span class="text-ink/65 text-sm md:text-base leading-relaxed">Праздничный банкет</span>
-              </div>
-            </li>
-            <li class="flex gap-4 group">
-              <span class="flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-lg group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">🌙</span>
-              <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-                <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">23:00</span>
-                <span class="text-ink/65 text-sm md:text-base leading-relaxed">Завершение вечера</span>
-              </div>
-            </li>
-          </ul>
-
-          <!-- Карта -->
-          <div class="w-full lg:sticky lg:top-8">
-            <p class="text-sm text-ink/55 mb-3 font-medium">Два адреса на карте — церковь и банкетный зал</p>
-            <div id="venue" class="rounded-2xl overflow-hidden ring-1 ring-mauve/10 shadow-soft">
-              <div id="map" class="h-[280px] md:h-[360px] lg:h-[420px] w-full z-0"></div>
-            </div>
-            <button
-              type="button"
-              id="btn-directions"
-              class="mt-5 w-full sm:w-auto px-8 py-3 rounded-full bg-mauve text-white font-medium tracking-wide hover:bg-mauvedark hover:scale-[1.02] active:scale-[0.98] transition-all shadow-soft"
-            >
-              Как добраться
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== RSVP (референс: шапка мальва + белая карточка) ========== -->
-  <section id="rsvp" class="py-20 md:py-28 px-5 ref-pattern-bg">
-    <div class="max-w-xl mx-auto rounded-3xl overflow-hidden shadow-lift ring-1 ring-mauve/10">
-      <div class="bg-mauve px-6 py-5 text-center">
-        <h2 class="font-display text-xl sm:text-2xl md:text-3xl font-semibold text-white tracking-[0.15em] uppercase">
-          Регистрация гостя
-        </h2>
-      </div>
-
-      <div class="bg-white px-6 md:px-10 py-8 md:py-10">
-        <h3 class="font-display text-2xl md:text-3xl text-ink text-center">Оставьте свои контакты</h3>
-        <p class="font-script text-xl md:text-2xl text-mauve text-center mt-2 mb-8">
-          Чтобы мы знали, что вы будете с нами в этот особенный день
+      <div class="mt-8 space-y-3 text-ink/90">
+        <p class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 justify-center lg:justify-start">
+          <span class="font-script text-2xl md:text-3xl text-mauve">Дата:</span>
+          <span id="hero-date-text" class="font-body text-lg md:text-xl font-medium"></span>
         </p>
-
-        <form id="rsvp-form" class="space-y-5">
-          <div>
-            <label for="fio" class="block text-sm font-medium text-ink/75 mb-2">ФИО <span class="text-mauve">*</span></label>
-            <input type="text" id="fio" name="fio" required maxlength="200"
-              class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Иванова Анна Сергеевна" />
-          </div>
-
-          <div>
-            <label for="phone" class="block text-sm font-medium text-ink/75 mb-2">Телефон для связи <span class="text-mauve">*</span></label>
-            <input type="tel" id="phone" name="phone" required inputmode="numeric" autocomplete="tel"
-              class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="+7 (___) ___-__-__" />
-          </div>
-
-          <div>
-            <label for="guests" class="block text-sm font-medium text-ink/75 mb-2">Количество гостей <span class="text-mauve">*</span></label>
-            <select id="guests" name="guests" required
-              class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow">
-              <option value="" disabled selected>Выберите</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4+">4+</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="alcohol" class="block text-sm font-medium text-ink/75 mb-2">Предпочитаемый алкоголь <span class="text-mauve">*</span></label>
-            <select id="alcohol" name="alcohol" required
-              class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow">
-              <option value="" disabled selected>Выберите</option>
-              <option value="Шампанское / игристое">Шампанское / игристое</option>
-              <option value="Вино (красное/белое)">Вино (красное/белое)</option>
-              <option value="Крепкие напитки">Крепкие напитки</option>
-              <option value="Безалкогольные напитки">Безалкогольные напитки</option>
-            </select>
-          </div>
-
-          <fieldset>
-            <legend class="text-sm font-medium text-ink/75 mb-3">Предпочтения по еде <span class="text-mauve">*</span> <span class="text-ink/45 font-normal">(можно несколько)</span></legend>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <label class="flex items-center gap-3 cursor-pointer group p-3 rounded-2xl border border-mauve/20 bg-parchment/30 hover:border-mauve/45 hover:bg-mauve/5 transition-colors">
-                <input type="checkbox" name="food" value="Мясо" class="rounded-full border-mauve/40 text-mauve focus:ring-mauve w-4 h-4" />
-                <span>Мясо</span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer group p-3 rounded-2xl border border-mauve/20 bg-parchment/30 hover:border-mauve/45 hover:bg-mauve/5 transition-colors">
-                <input type="checkbox" name="food" value="Рыба" class="rounded-full border-mauve/40 text-mauve focus:ring-mauve w-4 h-4" />
-                <span>Рыба</span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer group p-3 rounded-2xl border border-mauve/20 bg-parchment/30 hover:border-mauve/45 hover:bg-mauve/5 transition-colors">
-                <input type="checkbox" name="food" value="Вегетарианское" class="rounded-full border-mauve/40 text-mauve focus:ring-mauve w-4 h-4" />
-                <span>Вегетарианское</span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer group p-3 rounded-2xl border border-mauve/20 bg-parchment/30 hover:border-mauve/45 hover:bg-mauve/5 transition-colors">
-                <input type="checkbox" name="food" value="Всё ем" class="rounded-full border-mauve/40 text-mauve focus:ring-mauve w-4 h-4" />
-                <span>Всё ем</span>
-              </label>
-            </div>
-          </fieldset>
-
-          <div>
-            <label for="song" class="block text-sm font-medium text-ink/75 mb-2">Песня для танца <span class="text-ink/45 font-normal">(необязательно)</span></label>
-            <input type="text" id="song" name="song" maxlength="300"
-              class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Исполнитель — название" />
-          </div>
-
-          <div>
-            <label for="comment" class="block text-sm font-medium text-ink/75 mb-2">Особые пожелания <span class="text-mauve">*</span></label>
-            <textarea id="comment" name="comment" required rows="4" maxlength="2000"
-              class="w-full rounded-2xl border border-mauve/35 bg-parchment/50 px-5 py-3.5 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow resize-y placeholder:text-ink/35" placeholder="Аллергии, детское кресло, поздравление со сцены…"></textarea>
-          </div>
-
-          <p id="form-error" class="hidden text-mauve text-sm text-center font-medium"></p>
-
-          <button type="submit" id="submit-btn"
-            class="w-full py-4 rounded-full bg-mauve text-white font-display text-lg md:text-xl font-semibold tracking-[0.12em] uppercase shadow-soft hover:bg-mauvedark hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed">
-            Подтверждаю присутствие
-          </button>
-        </form>
+        <p class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 justify-center lg:justify-start">
+          <span class="font-script text-2xl md:text-3xl text-mauve">Место:</span>
+          <span id="hero-city" class="font-body text-lg md:text-xl font-medium"></span>
+        </p>
+        <p class="font-script text-2xl md:text-3xl text-mauve/90 pt-1" id="hero-meet">Увидимся на нашей свадьбе!</p>
       </div>
-    </div>
-  </section>
 
-  <!-- ========== ГАЛЕРЕЯ ========== -->
-  <section id="gallery" class="py-20 md:py-28 px-5 ref-pattern-bg border-t border-mauve/5">
-    <div class="max-w-5xl mx-auto">
-      <h2 class="font-display text-4xl md:text-5xl text-center text-ink mb-4">Моменты счастья</h2>
-      <div class="w-24 h-px bg-gradient-to-r from-transparent via-mauve/45 to-transparent mx-auto mb-12"></div>
-
-      <div class="masonry">
-        <!-- 8 placeholder-карточек: замените background-image на свои фото -->
-        <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-          <div class="aspect-[3/4] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=600&q=80');"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span class="heart-icon text-4xl text-mauve drop-shadow-lg" aria-hidden="true">♥</span>
-          </div>
+      <!-- Таймер: тонкие круги и двоеточия -->
+      <div class="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-1 sm:gap-2 text-ink">
+        <div class="cd-ring">
+          <span id="cd-days" class="font-display text-2xl md:text-3xl font-semibold text-mauve leading-none">00</span>
+          <span class="text-[10px] md:text-xs uppercase tracking-wider text-ink/50 mt-0.5">дней</span>
         </div>
-        <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-          <div class="aspect-square bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80');"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-          </div>
+        <span class="font-display text-mauve/60 text-xl md:text-2xl px-0.5">:</span>
+        <div class="cd-ring">
+          <span id="cd-hours" class="font-display text-2xl md:text-3xl font-semibold text-mauve leading-none">00</span>
+          <span class="text-[10px] md:text-xs uppercase tracking-wider text-ink/50 mt-0.5">часов</span>
         </div>
-        <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-          <div class="aspect-[4/5] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80');"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-          </div>
+        <span class="font-display text-mauve/60 text-xl md:text-2xl px-0.5">:</span>
+        <div class="cd-ring">
+          <span id="cd-mins" class="font-display text-2xl md:text-3xl font-semibold text-mauve leading-none">00</span>
+          <span class="text-[10px] md:text-xs uppercase tracking-wider text-ink/50 mt-0.5">мин</span>
         </div>
-        <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-          <div class="aspect-[5/6] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&q=80');"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-          </div>
-        </div>
-        <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-          <div class="aspect-square bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1522413452208-996ff3f3e740?w=600&q=80');"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-          </div>
-        </div>
-        <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-          <div class="aspect-[3/4] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=600&q=80');"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-          </div>
-        </div>
-        <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-          <div class="aspect-[4/3] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600&q=80');"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-          </div>
-        </div>
-        <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
-          <div class="aspect-[3/5] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80');"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
-          </div>
+        <span class="font-display text-mauve/60 text-xl md:text-2xl px-0.5">:</span>
+        <div class="cd-ring">
+          <span id="cd-secs" class="font-display text-2xl md:text-3xl font-semibold text-mauve leading-none">00</span>
+          <span class="text-[10px] md:text-xs uppercase tracking-wider text-ink/50 mt-0.5">сек</span>
         </div>
       </div>
+
+      <a
+              href="#rsvp"
+              class="cta-pulse inline-flex items-center justify-center gap-2 mt-10 px-8 py-4 rounded-full bg-mauve text-white font-semibold text-base md:text-lg tracking-wide shadow-lift hover:bg-mauvedark hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 mx-auto lg:mx-0"
+      >
+        <span>Принять приглашение</span>
+        <span class="text-xl leading-none" aria-hidden="true">♥</span>
+      </a>
     </div>
-  </section>
 
-  <!-- ========== FOOTER ========== -->
-  <footer class="py-16 px-5 bg-gradient-to-b from-parchment to-blush/30 border-t border-mauve/10">
-    <div class="max-w-lg mx-auto text-center">
-      <p class="text-3xl text-mauve mb-2" aria-hidden="true">♥</p>
-      <p class="font-display text-xl md:text-2xl text-ink">
-        С любовью, <span id="footer-names"></span>
-      </p>
-      <p id="footer-meta" class="mt-3 text-ink/65 text-sm"></p>
-
-      <div class="mt-10 inline-block p-4 bg-white/80 rounded-2xl shadow-soft ring-1 ring-mauve/10">
-        <p class="text-xs text-ink/50 mb-2 uppercase tracking-wider">Приглашение — QR</p>
-        <!-- Замените src на свой QR (например ссылка на эту страницу или PDF) -->
-        <img id="invite-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https%3A%2F%2Fexample.com" width="140" height="140" alt="QR-код приглашения" class="mx-auto rounded-lg opacity-90" />
-      </div>
-    </div>
-  </footer>
-
-  <!-- ========== МОДАЛКА СПАСИБО ========== -->
-  <div id="thank-modal" class="fixed inset-0 z-[1000] hidden items-center justify-center p-5 bg-ink/50 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="thank-title">
-    <div class="modal-panel bg-white rounded-3xl max-w-md w-full p-8 md:p-10 shadow-lift ring-1 ring-mauve/15 text-center relative">
-      <button type="button" id="modal-close" class="absolute top-4 right-4 text-ink/40 hover:text-mauve text-2xl leading-none w-10 h-10 rounded-full hover:bg-mauve/10 transition-colors" aria-label="Закрыть">×</button>
-      <p class="text-4xl mb-2" aria-hidden="true">💕</p>
-      <h3 id="thank-title" class="font-display text-3xl text-ink mb-3">Спасибо!</h3>
-      <p class="text-ink/75 leading-relaxed mb-8">
-        Ваша заявка принята. Мы так счастливы, что вы будете с нами в этот день — бережно сохраним каждую деталь и с нетерпением ждём встречи.
-      </p>
-      <button type="button" id="btn-share"
-        class="w-full py-3 rounded-full border-2 border-mauve text-mauve font-semibold hover:bg-mauve/10 transition-colors mb-3">
-        Поделиться приглашением
-      </button>
-      <button type="button" id="modal-ok" class="text-sm text-ink/50 hover:text-ink underline-offset-2 hover:underline">
-        Закрыть
-      </button>
+    <!-- Круглое фото пары (замените url в style на своё фото) -->
+    <div class="relative flex justify-center order-1 lg:order-2">
+      <div class="hero-blob-1 rounded-full blur-2xl" aria-hidden="true"></div>
+      <div class="hero-blob-2" aria-hidden="true"></div>
+      <div
+              class="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full bg-cover bg-center shadow-card ring-[3px] ring-white ring-offset-4 ring-offset-parchment transition-transform duration-500 hover:scale-[1.02]"
+              style="background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=900&q=85');"
+              role="img"
+              aria-label="Фото пары"
+      ></div>
     </div>
   </div>
 
-  <script>
+  <a href="#story" class="absolute bottom-6 left-1/2 -translate-x-1/2 text-mauve/50 hover:text-mauve transition-colors z-10" aria-label="Листать ниже">
+    <span class="block animate-bounce text-2xl">↓</span>
+  </a>
+</section>
+
+<!-- ========== О НАС ========== -->
+<section id="story" class="py-20 md:py-28 px-5 ref-pattern-bg border-y border-mauve/5">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="font-display text-4xl md:text-5xl text-center text-ink mb-4">Наша история</h2>
+    <div class="w-24 h-px bg-gradient-to-r from-transparent via-mauve/50 to-transparent mx-auto mb-12"></div>
+
+    <div class="flex flex-col md:flex-row gap-10 md:gap-16 items-center">
+      <div class="flex-1 order-2 md:order-1 space-y-4 text-ink/85 text-lg leading-relaxed">
+        <p>
+          Дорогие друзья и близкие, мы с радостью приглашаем вас разделить с нами самый важный день в нашей жизни — день нашей свадьбы!
+        </p>
+        <p class="font-script text-2xl text-mauve">С нетерпением ждём встречи…</p>
+      </div>
+      <div class="flex-1 order-1 md:order-2 w-full max-w-md">
+        <div
+                class="aspect-[4/5] rounded-3xl bg-cover bg-center shadow-card ring-1 ring-mauve/10 transition-transform duration-500 hover:scale-[1.02]"
+                style="background-image: linear-gradient(160deg, rgba(250,246,240,0.15), rgba(182,115,129,0.12)), url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800&q=80');"
+                role="img"
+                aria-label="Фото пары"
+        ></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ПРОГРАММА + КАРТА (как в референсе: баннер + белая карточка) ========== -->
+<section id="program" class="py-20 md:py-28 px-4 sm:px-5 ref-pattern-bg relative overflow-hidden">
+  <div class="max-w-5xl mx-auto relative z-10">
+    <!-- «Таблетка»-заголовок -->
+    <div class="flex flex-col items-center mb-10 md:mb-12">
+      <div class="text-mauve mb-2 opacity-80" aria-hidden="true">
+        <svg width="44" height="44" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="28" r="11" stroke="currentColor" stroke-width="1.3"/>
+          <circle cx="32" cy="28" r="11" stroke="currentColor" stroke-width="1.3"/>
+        </svg>
+      </div>
+      <div class="inline-flex items-center justify-center px-6 sm:px-10 py-3 rounded-full bg-mauve text-white shadow-lift">
+        <h2 class="font-display text-lg sm:text-xl md:text-2xl font-semibold tracking-[0.12em] uppercase text-center leading-snug">
+          Программа свадебного дня
+        </h2>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-card p-6 md:p-10 lg:p-12 ring-1 ring-mauve/5">
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-12 items-start">
+        <!-- Таймлайн: время крупно слева, описание справа -->
+        <ul class="space-y-8">
+          <li class="flex gap-4 group">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-lg group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">⛪</span>
+            <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+              <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">09:00</span>
+              <span class="text-ink/65 text-sm md:text-base leading-relaxed">Венчание в церкви</span>
+            </div>
+          </li>
+          <li class="flex gap-4 group">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-parchment flex items-center justify-center text-lg group-hover:scale-110 transition-transform ring-1 ring-mauve/10" aria-hidden="true">🥂</span>
+            <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+              <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">13:30</span>
+              <span class="text-ink/65 text-sm md:text-base leading-relaxed">Сбор гостей</span>
+            </div>
+          </li>
+          <li class="flex gap-4 group">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-lg group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">💍</span>
+            <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+              <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">14:00</span>
+              <span class="text-ink/65 text-sm md:text-base leading-relaxed">Торжественная церемония бракосочетания в банкетном зале «Кристалл», г. Ставрополь</span>
+            </div>
+          </li>
+          <li class="flex gap-4 group">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-parchment flex items-center justify-center text-lg group-hover:scale-110 transition-transform ring-1 ring-mauve/10" aria-hidden="true">🍽️</span>
+            <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+              <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">15:00</span>
+              <span class="text-ink/65 text-sm md:text-base leading-relaxed">Праздничный банкет</span>
+            </div>
+          </li>
+          <li class="flex gap-4 group">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-lg group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">🌙</span>
+            <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+              <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">23:00</span>
+              <span class="text-ink/65 text-sm md:text-base leading-relaxed">Завершение вечера</span>
+            </div>
+          </li>
+        </ul>
+
+        <!-- Карта -->
+        <div class="w-full lg:sticky lg:top-8">
+          <p class="text-sm text-ink/55 mb-3 font-medium">Два адреса на карте — церковь и банкетный зал</p>
+          <div id="venue" class="rounded-2xl overflow-hidden ring-1 ring-mauve/10 shadow-soft">
+            <div id="map" class="h-[280px] md:h-[360px] lg:h-[420px] w-full z-0"></div>
+          </div>
+          <button
+                  type="button"
+                  id="btn-directions"
+                  class="mt-5 w-full sm:w-auto px-8 py-3 rounded-full bg-mauve text-white font-medium tracking-wide hover:bg-mauvedark hover:scale-[1.02] active:scale-[0.98] transition-all shadow-soft"
+          >
+            Как добраться
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== RSVP (референс: шапка мальва + белая карточка) ========== -->
+<section id="rsvp" class="py-20 md:py-28 px-5 ref-pattern-bg">
+  <div class="max-w-xl mx-auto rounded-3xl overflow-hidden shadow-lift ring-1 ring-mauve/10">
+    <div class="bg-mauve px-6 py-5 text-center">
+      <h2 class="font-display text-xl sm:text-2xl md:text-3xl font-semibold text-white tracking-[0.15em] uppercase">
+        Регистрация гостя
+      </h2>
+    </div>
+
+    <div class="bg-white px-6 md:px-10 py-8 md:py-10">
+      <h3 class="font-display text-2xl md:text-3xl text-ink text-center">Оставьте свои контакты</h3>
+      <p class="font-script text-xl md:text-2xl text-mauve text-center mt-2 mb-8">
+        Чтобы мы знали, что вы будете с нами в этот особенный день
+      </p>
+
+      <form id="rsvp-form" class="space-y-5">
+        <div>
+          <label for="fio" class="block text-sm font-medium text-ink/75 mb-2">ФИО <span class="text-mauve">*</span></label>
+          <input type="text" id="fio" name="fio" required maxlength="200"
+                 class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Иванова Анна Сергеевна" />
+        </div>
+
+        <div>
+          <label for="phone" class="block text-sm font-medium text-ink/75 mb-2">Телефон для связи <span class="text-mauve">*</span></label>
+          <input type="tel" id="phone" name="phone" required inputmode="numeric" autocomplete="tel"
+                 class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="+7 (___) ___-__-__" />
+        </div>
+
+        <div>
+          <label for="guests" class="block text-sm font-medium text-ink/75 mb-2">Количество гостей <span class="text-mauve">*</span></label>
+          <select id="guests" name="guests" required
+                  class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow">
+            <option value="" disabled selected>Выберите</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4+">4+</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="alcohol" class="block text-sm font-medium text-ink/75 mb-2">Предпочитаемый алкоголь <span class="text-mauve">*</span></label>
+          <select id="alcohol" name="alcohol" required
+                  class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow">
+            <option value="" disabled selected>Выберите</option>
+            <option value="Шампанское / игристое">Шампанское / игристое</option>
+            <option value="Вино (красное/белое)">Вино (красное/белое)</option>
+            <option value="Крепкие напитки">Крепкие напитки</option>
+            <option value="Безалкогольные напитки">Безалкогольные напитки</option>
+          </select>
+        </div>
+
+        <fieldset>
+          <legend class="text-sm font-medium text-ink/75 mb-3">Предпочтения по еде <span class="text-mauve">*</span> <span class="text-ink/45 font-normal">(можно несколько)</span></legend>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="flex items-center gap-3 cursor-pointer group p-3 rounded-2xl border border-mauve/20 bg-parchment/30 hover:border-mauve/45 hover:bg-mauve/5 transition-colors">
+              <input type="checkbox" name="food" value="Мясо" class="rounded-full border-mauve/40 text-mauve focus:ring-mauve w-4 h-4" />
+              <span>Мясо</span>
+            </label>
+            <label class="flex items-center gap-3 cursor-pointer group p-3 rounded-2xl border border-mauve/20 bg-parchment/30 hover:border-mauve/45 hover:bg-mauve/5 transition-colors">
+              <input type="checkbox" name="food" value="Рыба" class="rounded-full border-mauve/40 text-mauve focus:ring-mauve w-4 h-4" />
+              <span>Рыба</span>
+            </label>
+            <label class="flex items-center gap-3 cursor-pointer group p-3 rounded-2xl border border-mauve/20 bg-parchment/30 hover:border-mauve/45 hover:bg-mauve/5 transition-colors">
+              <input type="checkbox" name="food" value="Вегетарианское" class="rounded-full border-mauve/40 text-mauve focus:ring-mauve w-4 h-4" />
+              <span>Вегетарианское</span>
+            </label>
+            <label class="flex items-center gap-3 cursor-pointer group p-3 rounded-2xl border border-mauve/20 bg-parchment/30 hover:border-mauve/45 hover:bg-mauve/5 transition-colors">
+              <input type="checkbox" name="food" value="Всё ем" class="rounded-full border-mauve/40 text-mauve focus:ring-mauve w-4 h-4" />
+              <span>Всё ем</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div>
+          <label for="song" class="block text-sm font-medium text-ink/75 mb-2">Песня для танца <span class="text-ink/45 font-normal">(необязательно)</span></label>
+          <input type="text" id="song" name="song" maxlength="300"
+                 class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3.5 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Исполнитель — название" />
+        </div>
+
+        <div>
+          <label for="comment" class="block text-sm font-medium text-ink/75 mb-2">Особые пожелания <span class="text-mauve">*</span></label>
+          <textarea id="comment" name="comment" required rows="4" maxlength="2000"
+                    class="w-full rounded-2xl border border-mauve/35 bg-parchment/50 px-5 py-3.5 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow resize-y placeholder:text-ink/35" placeholder="Аллергии, детское кресло, поздравление со сцены…"></textarea>
+        </div>
+
+        <p id="form-error" class="hidden text-mauve text-sm text-center font-medium"></p>
+
+        <button type="submit" id="submit-btn"
+                class="w-full py-4 rounded-full bg-mauve text-white font-display text-lg md:text-xl font-semibold tracking-[0.12em] uppercase shadow-soft hover:bg-mauvedark hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed">
+          Подтверждаю присутствие
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ГАЛЕРЕЯ ========== -->
+<section id="gallery" class="py-20 md:py-28 px-5 ref-pattern-bg border-t border-mauve/5">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="font-display text-4xl md:text-5xl text-center text-ink mb-4">Моменты счастья</h2>
+    <div class="w-24 h-px bg-gradient-to-r from-transparent via-mauve/45 to-transparent mx-auto mb-12"></div>
+
+    <div class="masonry">
+      <!-- 8 placeholder-карточек: замените background-image на свои фото -->
+      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
+        <div class="aspect-[3/4] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=600&q=80');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <span class="heart-icon text-4xl text-mauve drop-shadow-lg" aria-hidden="true">♥</span>
+        </div>
+      </div>
+      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
+        <div class="aspect-square bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
+        </div>
+      </div>
+      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
+        <div class="aspect-[4/5] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
+        </div>
+      </div>
+      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
+        <div class="aspect-[5/6] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&q=80');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
+        </div>
+      </div>
+      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
+        <div class="aspect-square bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1522413452208-996ff3f3e740?w=600&q=80');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
+        </div>
+      </div>
+      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
+        <div class="aspect-[3/4] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=600&q=80');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
+        </div>
+      </div>
+      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
+        <div class="aspect-[4/3] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600&q=80');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
+        </div>
+      </div>
+      <div class="masonry-item gallery-card relative rounded-2xl overflow-hidden shadow-soft cursor-pointer group">
+        <div class="aspect-[3/5] bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <span class="heart-icon text-4xl text-mauve drop-shadow-lg">♥</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="py-16 px-5 bg-gradient-to-b from-parchment to-blush/30 border-t border-mauve/10">
+  <div class="max-w-lg mx-auto text-center">
+    <p class="text-3xl text-mauve mb-2" aria-hidden="true">♥</p>
+    <p class="font-display text-xl md:text-2xl text-ink">
+      С любовью, <span id="footer-names"></span>
+    </p>
+    <p id="footer-meta" class="mt-3 text-ink/65 text-sm"></p>
+
+    <div class="mt-10 inline-block p-4 bg-white/80 rounded-2xl shadow-soft ring-1 ring-mauve/10">
+      <p class="text-xs text-ink/50 mb-2 uppercase tracking-wider">Приглашение — QR</p>
+      <!-- Замените src на свой QR (например ссылка на эту страницу или PDF) -->
+      <img id="invite-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https%3A%2F%2Fexample.com" width="140" height="140" alt="QR-код приглашения" class="mx-auto rounded-lg opacity-90" />
+    </div>
+  </div>
+</footer>
+
+<!-- ========== МОДАЛКА СПАСИБО ========== -->
+<div id="thank-modal" class="fixed inset-0 z-[1000] hidden items-center justify-center p-5 bg-ink/50 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="thank-title">
+  <div class="modal-panel bg-white rounded-3xl max-w-md w-full p-8 md:p-10 shadow-lift ring-1 ring-mauve/15 text-center relative">
+    <button type="button" id="modal-close" class="absolute top-4 right-4 text-ink/40 hover:text-mauve text-2xl leading-none w-10 h-10 rounded-full hover:bg-mauve/10 transition-colors" aria-label="Закрыть">×</button>
+    <p class="text-4xl mb-2" aria-hidden="true">💕</p>
+    <h3 id="thank-title" class="font-display text-3xl text-ink mb-3">Спасибо!</h3>
+    <p class="text-ink/75 leading-relaxed mb-8">
+      Ваша заявка принята. Мы так счастливы, что вы будете с нами в этот день — бережно сохраним каждую деталь и с нетерпением ждём встречи.
+    </p>
+    <button type="button" id="btn-share"
+            class="w-full py-3 rounded-full border-2 border-mauve text-mauve font-semibold hover:bg-mauve/10 transition-colors mb-3">
+      Поделиться приглашением
+    </button>
+    <button type="button" id="modal-ok" class="text-sm text-ink/50 hover:text-ink underline-offset-2 hover:underline">
+      Закрыть
+    </button>
+  </div>
+</div>
+
+<script>
+  /**
+   * ========================================================================
+   * КОНФИГУРАЦИЯ — меняйте здесь имена, дату, координаты и URL скрипта
+   * ========================================================================
+   */
+  const CONFIG = {
+    groomName: 'Юра',
+    brideName: 'Кристина',
+    /** Дата/время свадьбы для таймера (ISO 8601, учитывайте часовой пояс) */
+    weddingDateISO: '2026-08-06T14:00:00+03:00',
+    /** Текст даты для отображения в hero (как хотите видеть на сайте) */
+    weddingDateDisplay: '6 августа 2026',
+    city: 'Ставрополь',
+    /** Строка под «Место:» в hero (город, зал — как удобно) */
+    venueLine: 'Ставрополь',
+    /** Короткая фраза рукописным шрифтом под датой */
+    meetLine: 'Увидимся на нашей свадьбе!',
+
+    churchName: 'Церковь Марии Магдалины',
+    hallName: 'Банкетный зал «Кристалл»',
+    /** Координаты: церковь и банкетный зал (Ставрополь) */
+    churchLat: 45.054358,
+    churchLng: 41.992073,
+    hallLat: 45.028922,
+    hallLng: 41.974787,
+
     /**
-     * ========================================================================
-     * КОНФИГУРАЦИЯ — меняйте здесь имена, дату, координаты и URL скрипта
-     * ========================================================================
+     * URL веб-приложения Google Apps Script после развёртывания.
+     * ЗАМЕНИТЕ на свой: https://script.google.com/macros/s/ВАШ_ID/exec
      */
-    const CONFIG = {
-      groomName: 'Юра',
-      brideName: 'Кристина',
-      /** Дата/время свадьбы для таймера (ISO 8601, учитывайте часовой пояс) */
-      weddingDateISO: '2026-08-06T14:00:00+03:00',
-      /** Текст даты для отображения в hero (как хотите видеть на сайте) */
-      weddingDateDisplay: '6 августа 2026',
-      city: 'Ставрополь',
-      /** Строка под «Место:» в hero (город, зал — как удобно) */
-      venueLine: 'Ставрополь',
-      /** Короткая фраза рукописным шрифтом под датой */
-      meetLine: 'Увидимся на нашей свадьбе!',
+    SCRIPT_URL: 'https://script.google.com/macros/s/ВАШ_ID_СКРИПТА/exec',
+  };
 
-      churchName: 'Церковь Марии Магдалины',
-      hallName: 'Банкетный зал «Кристалл»',
-      /** Координаты: церковь и банкетный зал (Ставрополь) */
-      churchLat: 45.054358,
-      churchLng: 41.992073,
-      hallLat: 45.028922,
-      hallLng: 41.974787,
+  /**
+   * URL веб-приложения Google Apps Script (webhook).
+   * ЗАМЕНИТЕ на свой реальный URL после развёртывания скрипта — см. комментарий в начале файла.
+   */
+  const SCRIPT_URL = CONFIG.SCRIPT_URL;
 
-      /**
-       * URL веб-приложения Google Apps Script после развёртывания.
-       * ЗАМЕНИТЕ на свой: https://script.google.com/macros/s/ВАШ_ID/exec
-       */
-      SCRIPT_URL: 'https://script.google.com/macros/s/ВАШ_ID_СКРИПТА/exec',
+  // Если URL не заменён (остался placeholder), форма покажет успех локально без отправки на сервер
+  const SCRIPT_URL_PLACEHOLDER = 'https://script.google.com/macros/s/ВАШ_ID_СКРИПТА/exec';
+
+  /* ---------- Заполнение текстов с CONFIG ---------- */
+  function applyTexts() {
+    document.getElementById('hero-groom').textContent = CONFIG.groomName;
+    document.getElementById('hero-bride').textContent = CONFIG.brideName;
+    document.getElementById('hero-date-text').textContent = CONFIG.weddingDateDisplay;
+    document.getElementById('hero-city').textContent = CONFIG.venueLine || CONFIG.city;
+    document.getElementById('hero-meet').textContent = CONFIG.meetLine || 'Увидимся на нашей свадьбе!';
+    document.getElementById('footer-names').textContent = CONFIG.groomName + ' и ' + CONFIG.brideName;
+    document.getElementById('footer-meta').textContent =
+            CONFIG.weddingDateDisplay + ' · ' + CONFIG.city;
+  }
+
+  /* ---------- Таймер обратного отсчёта ---------- */
+  const weddingTime = new Date(CONFIG.weddingDateISO).getTime();
+
+  function pad(n) {
+    return String(n).padStart(2, '0');
+  }
+
+  function updateCountdown() {
+    const now = Date.now();
+    let diff = weddingTime - now;
+    const els = {
+      days: document.getElementById('cd-days'),
+      hours: document.getElementById('cd-hours'),
+      mins: document.getElementById('cd-mins'),
+      secs: document.getElementById('cd-secs'),
     };
+    if (diff <= 0) {
+      els.days.textContent = '00';
+      els.hours.textContent = '00';
+      els.mins.textContent = '00';
+      els.secs.textContent = '00';
+      return;
+    }
+    const sec = Math.floor(diff / 1000);
+    const days = Math.floor(sec / 86400);
+    const hours = Math.floor((sec % 86400) / 3600);
+    const mins = Math.floor((sec % 3600) / 60);
+    const secs = sec % 60;
+    els.days.textContent = pad(days);
+    els.hours.textContent = pad(hours);
+    els.mins.textContent = pad(mins);
+    els.secs.textContent = pad(secs);
+  }
 
-    /**
-     * URL веб-приложения Google Apps Script (webhook).
-     * ЗАМЕНИТЕ на свой реальный URL после развёртывания скрипта — см. комментарий в начале файла.
-     */
-    const SCRIPT_URL = CONFIG.SCRIPT_URL;
+  /* ---------- Hero: лёгкое усиление «вуали» при скролле (светлый блок) ---------- */
+  function updateHeroOverlay() {
+    const hero = document.getElementById('hero');
+    const rect = hero.getBoundingClientRect();
+    const h = rect.height || 1;
+    const scrolled = Math.min(1, Math.max(0, -rect.top / (h * 0.9)));
+    const base = 0.12;
+    const extra = scrolled * 0.18;
+    hero.style.setProperty('--hero-wash', String(base + extra));
+  }
 
-    // Если URL не заменён (остался placeholder), форма покажет успех локально без отправки на сервер
-    const SCRIPT_URL_PLACEHOLDER = 'https://script.google.com/macros/s/ВАШ_ID_СКРИПТА/exec';
+  /* ---------- Летающие сердечки ---------- */
+  function spawnHearts() {
+    const container = document.getElementById('hearts-container');
+    const count = window.innerWidth < 640 ? 12 : 22;
+    const hearts = ['♥', '♡', '💕'];
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('span');
+      el.className = 'heart-float';
+      el.textContent = hearts[i % hearts.length];
+      el.style.setProperty('--x', Math.random() * 100 + '%');
+      el.style.setProperty('--dur', (12 + Math.random() * 16) + 's');
+      el.style.setProperty('--delay', (-Math.random() * 20) + 's');
+      el.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+      container.appendChild(el);
+    }
+  }
 
-    /* ---------- Заполнение текстов с CONFIG ---------- */
-    function applyTexts() {
-      document.getElementById('hero-groom').textContent = CONFIG.groomName;
-      document.getElementById('hero-bride').textContent = CONFIG.brideName;
-      document.getElementById('hero-date-text').textContent = CONFIG.weddingDateDisplay;
-      document.getElementById('hero-city').textContent = CONFIG.venueLine || CONFIG.city;
-      document.getElementById('hero-meet').textContent = CONFIG.meetLine || 'Увидимся на нашей свадьбе!';
-      document.getElementById('footer-names').textContent = CONFIG.groomName + ' и ' + CONFIG.brideName;
-      document.getElementById('footer-meta').textContent =
-        CONFIG.weddingDateDisplay + ' · ' + CONFIG.city;
+  /* ---------- Маска телефона +7 ---------- */
+  const phoneInput = document.getElementById('phone');
+
+  function formatPhoneDigits(digits) {
+    let d = digits.replace(/\D/g, '');
+    if (d.startsWith('8')) d = '7' + d.slice(1);
+    if (!d.startsWith('7') && d.length) d = '7' + d.replace(/^7+/, '');
+    d = d.slice(0, 11);
+    let out = '+7';
+    if (d.length > 1) out += ' (' + d.slice(1, 4);
+    if (d.length >= 4) out += ')';
+    if (d.length > 4) out += ' ' + d.slice(4, 7);
+    if (d.length > 7) out += '-' + d.slice(7, 9);
+    if (d.length > 9) out += '-' + d.slice(9, 11);
+    return out;
+  }
+
+  phoneInput.addEventListener('input', function () {
+    const cur = this.selectionStart;
+    const before = this.value;
+    this.value = formatPhoneDigits(this.value);
+    // грубое сохранение позиции курсора
+    if (this.value.length < before.length) {
+      this.setSelectionRange(this.value.length, this.value.length);
+    }
+  });
+
+  phoneInput.addEventListener('focus', function () {
+    if (!this.value.trim()) this.value = '+7 (';
+  });
+
+  /* ---------- Leaflet карта ---------- */
+  let mapInstance = null;
+
+  function initMap() {
+    const centerLat = (CONFIG.churchLat + CONFIG.hallLat) / 2;
+    const centerLng = (CONFIG.churchLng + CONFIG.hallLng) / 2;
+    mapInstance = L.map('map', { scrollWheelZoom: false }).setView([centerLat, centerLng], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap',
+      maxZoom: 19,
+    }).addTo(mapInstance);
+
+    function pinIcon(bg, emoji) {
+      return L.divIcon({
+        className: 'custom-leaflet-marker',
+        html: '<div style="width:40px;height:40px;border-radius:50%;background:' + bg + ';display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,0.18);border:2px solid #fff;font-size:18px;line-height:1;">' + emoji + '</div>',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+      });
     }
 
-    /* ---------- Таймер обратного отсчёта ---------- */
-    const weddingTime = new Date(CONFIG.weddingDateISO).getTime();
+    L.marker([CONFIG.churchLat, CONFIG.churchLng], { icon: pinIcon('#B67381', '⛪') })
+            .addTo(mapInstance)
+            .bindPopup('<strong>' + CONFIG.churchName + '</strong><br>09:00 — Венчание');
 
-    function pad(n) {
-      return String(n).padStart(2, '0');
+    L.marker([CONFIG.hallLat, CONFIG.hallLng], { icon: pinIcon('#C9A962', '🥂') })
+            .addTo(mapInstance)
+            .bindPopup('<strong>' + CONFIG.hallName + '</strong><br>Ставрополь');
+
+    const bounds = L.latLngBounds(
+            [CONFIG.churchLat, CONFIG.churchLng],
+            [CONFIG.hallLat, CONFIG.hallLng]
+    );
+    mapInstance.fitBounds(bounds, { padding: [48, 48], maxZoom: 15 });
+    setTimeout(function () { mapInstance.invalidateSize(); }, 200);
+  }
+
+  document.getElementById('btn-directions').addEventListener('click', function () {
+    const lat = CONFIG.hallLat;
+    const lng = CONFIG.hallLng;
+    const url = 'https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  });
+
+  /* ---------- Конфетти ---------- */
+  function fireConfetti() {
+    if (typeof confetti !== 'function') return;
+    const count = 160;
+    const defaults = { origin: { y: 0.65 }, zIndex: 2000 };
+
+    function fire(particleRatio, opts) {
+      confetti({
+        ...defaults,
+        ...opts,
+        particleCount: Math.floor(count * particleRatio),
+      });
     }
 
-    function updateCountdown() {
-      const now = Date.now();
-      let diff = weddingTime - now;
-      const els = {
-        days: document.getElementById('cd-days'),
-        hours: document.getElementById('cd-hours'),
-        mins: document.getElementById('cd-mins'),
-        secs: document.getElementById('cd-secs'),
-      };
-      if (diff <= 0) {
-        els.days.textContent = '00';
-        els.hours.textContent = '00';
-        els.mins.textContent = '00';
-        els.secs.textContent = '00';
-        return;
+    fire(0.25, { spread: 26, startVelocity: 55, colors: ['#B67381', '#C9A962', '#FAF6F0', '#E8DDD4'] });
+    fire(0.2, { spread: 60, colors: ['#B67381', '#C9A962'] });
+    fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8, colors: ['#C9A962', '#F5E6E8', '#9a5f6c'] });
+    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+    fire(0.1, { spread: 120, startVelocity: 45 });
+  }
+
+  /* ---------- Модалка ---------- */
+  const thankModal = document.getElementById('thank-modal');
+
+  function openThankModal() {
+    thankModal.classList.remove('hidden');
+    thankModal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    fireConfetti();
+  }
+
+  function closeThankModal() {
+    thankModal.classList.add('hidden');
+    thankModal.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modal-close').addEventListener('click', closeThankModal);
+  document.getElementById('modal-ok').addEventListener('click', closeThankModal);
+  thankModal.addEventListener('click', function (e) {
+    if (e.target === thankModal) closeThankModal();
+  });
+
+  document.getElementById('btn-share').addEventListener('click', async function () {
+    const shareData = {
+      title: 'Приглашение на свадьбу',
+      text: CONFIG.groomName + ' и ' + CONFIG.brideName + ' — ' + CONFIG.weddingDateDisplay,
+      url: window.location.href,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert('Ссылка скопирована в буфер обмена');
       }
-      const sec = Math.floor(diff / 1000);
-      const days = Math.floor(sec / 86400);
-      const hours = Math.floor((sec % 86400) / 3600);
-      const mins = Math.floor((sec % 3600) / 60);
-      const secs = sec % 60;
-      els.days.textContent = pad(days);
-      els.hours.textContent = pad(hours);
-      els.mins.textContent = pad(mins);
-      els.secs.textContent = pad(secs);
-    }
-
-    /* ---------- Hero: лёгкое усиление «вуали» при скролле (светлый блок) ---------- */
-    function updateHeroOverlay() {
-      const hero = document.getElementById('hero');
-      const rect = hero.getBoundingClientRect();
-      const h = rect.height || 1;
-      const scrolled = Math.min(1, Math.max(0, -rect.top / (h * 0.9)));
-      const base = 0.12;
-      const extra = scrolled * 0.18;
-      hero.style.setProperty('--hero-wash', String(base + extra));
-    }
-
-    /* ---------- Летающие сердечки ---------- */
-    function spawnHearts() {
-      const container = document.getElementById('hearts-container');
-      const count = window.innerWidth < 640 ? 12 : 22;
-      const hearts = ['♥', '♡', '💕'];
-      for (let i = 0; i < count; i++) {
-        const el = document.createElement('span');
-        el.className = 'heart-float';
-        el.textContent = hearts[i % hearts.length];
-        el.style.setProperty('--x', Math.random() * 100 + '%');
-        el.style.setProperty('--dur', (12 + Math.random() * 16) + 's');
-        el.style.setProperty('--delay', (-Math.random() * 20) + 's');
-        el.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
-        container.appendChild(el);
-      }
-    }
-
-    /* ---------- Маска телефона +7 ---------- */
-    const phoneInput = document.getElementById('phone');
-
-    function formatPhoneDigits(digits) {
-      let d = digits.replace(/\D/g, '');
-      if (d.startsWith('8')) d = '7' + d.slice(1);
-      if (!d.startsWith('7') && d.length) d = '7' + d.replace(/^7+/, '');
-      d = d.slice(0, 11);
-      let out = '+7';
-      if (d.length > 1) out += ' (' + d.slice(1, 4);
-      if (d.length >= 4) out += ')';
-      if (d.length > 4) out += ' ' + d.slice(4, 7);
-      if (d.length > 7) out += '-' + d.slice(7, 9);
-      if (d.length > 9) out += '-' + d.slice(9, 11);
-      return out;
-    }
-
-    phoneInput.addEventListener('input', function () {
-      const cur = this.selectionStart;
-      const before = this.value;
-      this.value = formatPhoneDigits(this.value);
-      // грубое сохранение позиции курсора
-      if (this.value.length < before.length) {
-        this.setSelectionRange(this.value.length, this.value.length);
-      }
-    });
-
-    phoneInput.addEventListener('focus', function () {
-      if (!this.value.trim()) this.value = '+7 (';
-    });
-
-    /* ---------- Leaflet карта ---------- */
-    let mapInstance = null;
-
-    function initMap() {
-      const centerLat = (CONFIG.churchLat + CONFIG.hallLat) / 2;
-      const centerLng = (CONFIG.churchLng + CONFIG.hallLng) / 2;
-      mapInstance = L.map('map', { scrollWheelZoom: false }).setView([centerLat, centerLng], 14);
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap',
-        maxZoom: 19,
-      }).addTo(mapInstance);
-
-      function pinIcon(bg, emoji) {
-        return L.divIcon({
-          className: 'custom-leaflet-marker',
-          html: '<div style="width:40px;height:40px;border-radius:50%;background:' + bg + ';display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,0.18);border:2px solid #fff;font-size:18px;line-height:1;">' + emoji + '</div>',
-          iconSize: [40, 40],
-          iconAnchor: [20, 40],
-        });
-      }
-
-      L.marker([CONFIG.churchLat, CONFIG.churchLng], { icon: pinIcon('#B67381', '⛪') })
-        .addTo(mapInstance)
-        .bindPopup('<strong>' + CONFIG.churchName + '</strong><br>09:00 — Венчание');
-
-      L.marker([CONFIG.hallLat, CONFIG.hallLng], { icon: pinIcon('#C9A962', '🥂') })
-        .addTo(mapInstance)
-        .bindPopup('<strong>' + CONFIG.hallName + '</strong><br>Ставрополь');
-
-      const bounds = L.latLngBounds(
-        [CONFIG.churchLat, CONFIG.churchLng],
-        [CONFIG.hallLat, CONFIG.hallLng]
-      );
-      mapInstance.fitBounds(bounds, { padding: [48, 48], maxZoom: 15 });
-      setTimeout(function () { mapInstance.invalidateSize(); }, 200);
-    }
-
-    document.getElementById('btn-directions').addEventListener('click', function () {
-      const lat = CONFIG.hallLat;
-      const lng = CONFIG.hallLng;
-      const url = 'https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng;
-      window.open(url, '_blank', 'noopener,noreferrer');
-    });
-
-    /* ---------- Конфетти ---------- */
-    function fireConfetti() {
-      if (typeof confetti !== 'function') return;
-      const count = 160;
-      const defaults = { origin: { y: 0.65 }, zIndex: 2000 };
-
-      function fire(particleRatio, opts) {
-        confetti({
-          ...defaults,
-          ...opts,
-          particleCount: Math.floor(count * particleRatio),
-        });
-      }
-
-      fire(0.25, { spread: 26, startVelocity: 55, colors: ['#B67381', '#C9A962', '#FAF6F0', '#E8DDD4'] });
-      fire(0.2, { spread: 60, colors: ['#B67381', '#C9A962'] });
-      fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8, colors: ['#C9A962', '#F5E6E8', '#9a5f6c'] });
-      fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
-      fire(0.1, { spread: 120, startVelocity: 45 });
-    }
-
-    /* ---------- Модалка ---------- */
-    const thankModal = document.getElementById('thank-modal');
-
-    function openThankModal() {
-      thankModal.classList.remove('hidden');
-      thankModal.classList.add('flex');
-      document.body.style.overflow = 'hidden';
-      fireConfetti();
-    }
-
-    function closeThankModal() {
-      thankModal.classList.add('hidden');
-      thankModal.classList.remove('flex');
-      document.body.style.overflow = '';
-    }
-
-    document.getElementById('modal-close').addEventListener('click', closeThankModal);
-    document.getElementById('modal-ok').addEventListener('click', closeThankModal);
-    thankModal.addEventListener('click', function (e) {
-      if (e.target === thankModal) closeThankModal();
-    });
-
-    document.getElementById('btn-share').addEventListener('click', async function () {
-      const shareData = {
-        title: 'Приглашение на свадьбу',
-        text: CONFIG.groomName + ' и ' + CONFIG.brideName + ' — ' + CONFIG.weddingDateDisplay,
-        url: window.location.href,
-      };
-      try {
-        if (navigator.share) {
-          await navigator.share(shareData);
-        } else {
+    } catch (e) {
+      if (e && e.name !== 'AbortError') {
+        try {
           await navigator.clipboard.writeText(window.location.href);
           alert('Ссылка скопирована в буфер обмена');
-        }
-      } catch (e) {
-        if (e && e.name !== 'AbortError') {
-          try {
-            await navigator.clipboard.writeText(window.location.href);
-            alert('Ссылка скопирована в буфер обмена');
-          } catch (_) {}
-        }
+        } catch (_) {}
       }
-    });
-
-    /* ---------- Форма RSVP ---------- */
-    const form = document.getElementById('rsvp-form');
-    const formError = document.getElementById('form-error');
-    const submitBtn = document.getElementById('submit-btn');
-
-    form.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      formError.classList.add('hidden');
-
-      const foodBoxes = form.querySelectorAll('input[name="food"]:checked');
-      if (foodBoxes.length === 0) {
-        formError.textContent = 'Пожалуйста, укажите хотя бы один вариант предпочтений по еде.';
-        formError.classList.remove('hidden');
-        return;
-      }
-
-      const foodValues = Array.from(foodBoxes).map(function (cb) { return cb.value; });
-
-      const payload = {
-        fio: document.getElementById('fio').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        guests: document.getElementById('guests').value,
-        alcohol: document.getElementById('alcohol').value,
-        food: foodValues.join(', '),
-        song: document.getElementById('song').value.trim(),
-        comment: document.getElementById('comment').value.trim(),
-        submittedAt: new Date().toISOString(),
-      };
-
-      const urlConfigured = SCRIPT_URL && SCRIPT_URL !== SCRIPT_URL_PLACEHOLDER;
-
-      submitBtn.disabled = true;
-
-      try {
-        if (urlConfigured) {
-          await fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(payload),
-          });
-          // no-cors: ответ недоступен — считаем отправку инициированной
-        } else {
-          // Демо без реального URL: имитация задержки сети
-          await new Promise(function (r) { setTimeout(r, 600); });
-          console.warn('[RSVP] Замените SCRIPT_URL (CONFIG.SCRIPT_URL) на URL вашего Google Apps Script для записи в таблицу.');
-        }
-        form.reset();
-        openThankModal();
-      } catch (err) {
-        formError.textContent = 'Не удалось отправить. Проверьте подключение к интернету и попробуйте снова.';
-        formError.classList.remove('hidden');
-      } finally {
-        submitBtn.disabled = false;
-      }
-    });
-
-    /*
-     * Пример кода для Google Apps Script (файл Code.gs), чтобы принимать POST и писать в лист:
-     *
-     * function doPost(e) {
-     *   const sheet = SpreadsheetApp.openById('ID_ТАБЛИЦЫ').getSheetByName('Ответы');
-     *   let data = {};
-     *   try { data = JSON.parse(e.postData.contents); } catch (x) { return ContentService.createTextOutput('bad json'); }
-     *   sheet.appendRow([
-     *     new Date(), data.fio, data.phone, data.guests, data.alcohol, data.food, data.song, data.comment, data.submittedAt
-     *   ]);
-     *   return ContentService.createTextOutput(JSON.stringify({ ok: true })).setMimeType(ContentService.MimeType.JSON);
-     * }
-     *
-     * Разверните как веб-приложение: доступ «Все», выполнять от вашего имени.
-     * Если браузер шлёт JSON с no-cors, в скрипте читайте e.postData.contents.
-     */
-
-    /* ---------- Старт ---------- */
-    applyTexts();
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-    spawnHearts();
-    updateHeroOverlay();
-    window.addEventListener('scroll', updateHeroOverlay, { passive: true });
-    window.addEventListener('resize', updateHeroOverlay);
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initMap);
-    } else {
-      initMap();
     }
-  </script>
+  });
+
+  /* ---------- Форма RSVP ---------- */
+  const form = document.getElementById('rsvp-form');
+  const formError = document.getElementById('form-error');
+  const submitBtn = document.getElementById('submit-btn');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    formError.classList.add('hidden');
+
+    const foodBoxes = form.querySelectorAll('input[name="food"]:checked');
+    if (foodBoxes.length === 0) {
+      formError.textContent = 'Пожалуйста, укажите хотя бы один вариант предпочтений по еде.';
+      formError.classList.remove('hidden');
+      return;
+    }
+
+    const foodValues = Array.from(foodBoxes).map(function (cb) { return cb.value; });
+
+    const payload = {
+      fio: document.getElementById('fio').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      guests: document.getElementById('guests').value,
+      alcohol: document.getElementById('alcohol').value,
+      food: foodValues.join(', '),
+      song: document.getElementById('song').value.trim(),
+      comment: document.getElementById('comment').value.trim(),
+      submittedAt: new Date().toISOString(),
+    };
+
+    const urlConfigured = SCRIPT_URL && SCRIPT_URL !== SCRIPT_URL_PLACEHOLDER;
+
+    submitBtn.disabled = true;
+
+    try {
+      if (urlConfigured) {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload),
+        });
+        // no-cors: ответ недоступен — считаем отправку инициированной
+      } else {
+        // Демо без реального URL: имитация задержки сети
+        await new Promise(function (r) { setTimeout(r, 600); });
+        console.warn('[RSVP] Замените SCRIPT_URL (CONFIG.SCRIPT_URL) на URL вашего Google Apps Script для записи в таблицу.');
+      }
+      form.reset();
+      openThankModal();
+    } catch (err) {
+      formError.textContent = 'Не удалось отправить. Проверьте подключение к интернету и попробуйте снова.';
+      formError.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  /*
+   * Пример кода для Google Apps Script (файл Code.gs), чтобы принимать POST и писать в лист:
+   *
+   * function doPost(e) {
+   *   const sheet = SpreadsheetApp.openById('ID_ТАБЛИЦЫ').getSheetByName('Ответы');
+   *   let data = {};
+   *   try { data = JSON.parse(e.postData.contents); } catch (x) { return ContentService.createTextOutput('bad json'); }
+   *   sheet.appendRow([
+   *     new Date(), data.fio, data.phone, data.guests, data.alcohol, data.food, data.song, data.comment, data.submittedAt
+   *   ]);
+   *   return ContentService.createTextOutput(JSON.stringify({ ok: true })).setMimeType(ContentService.MimeType.JSON);
+   * }
+   *
+   * Разверните как веб-приложение: доступ «Все», выполнять от вашего имени.
+   * Если браузер шлёт JSON с no-cors, в скрипте читайте e.postData.contents.
+   */
+
+  /* ---------- Старт ---------- */
+  applyTexts();
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+  spawnHearts();
+  updateHeroOverlay();
+  window.addEventListener('scroll', updateHeroOverlay, { passive: true });
+  window.addEventListener('resize', updateHeroOverlay);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMap);
+  } else {
+    initMap();
+  }
+</script>
 </body>
 </html>
