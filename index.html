@@ -34,7 +34,7 @@
 ================================================================================
 -->
 <!DOCTYPE html>
-<html lang="ru" class="scroll-smooth">
+<html lang="ru" class="scroll-smooth min-h-full bg-[#F3EDE5]">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -147,17 +147,63 @@
 
     /* Кастомный скроллбар (необязательно, лёгкий акцент) */
     ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #FDF8F3; }
+    ::-webkit-scrollbar-track { background: #F3EDE5; }
     ::-webkit-scrollbar-thumb { background: #B67381; border-radius: 4px; }
 
-    /* Фон «пергамент + лёгкие цветы» (как в референсе) */
-    .ref-pattern-bg {
-      background-color: #FAF6F0;
+    /*
+     * Глобальный фон страницы: крупные «акварельные» пятна + тонкий узор + лёгкая фактура.
+     * Слой fixed не перехватывает клики (pointer-events: none).
+     */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-color: #F3EDE5;
       background-image:
-              radial-gradient(ellipse 120% 80% at 0% 20%, rgba(182, 115, 129, 0.07) 0%, transparent 50%),
-              radial-gradient(ellipse 90% 70% at 100% 0%, rgba(201, 169, 98, 0.06) 0%, transparent 45%),
-              radial-gradient(circle at 15% 85%, rgba(182, 115, 129, 0.05) 0%, transparent 35%),
-              url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M30 30c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm0 0c0 11 9 20 20 20s20-9 20-20-9-20-20-20-20 9-20 20z' stroke='%23B67381' stroke-opacity='.04'/%3E%3C/g%3E%3C/svg%3E");
+        radial-gradient(ellipse 110% 55% at 92% 8%, rgba(182, 115, 129, 0.16), transparent 58%),
+        radial-gradient(ellipse 85% 60% at -5% 35%, rgba(201, 169, 98, 0.11), transparent 52%),
+        radial-gradient(ellipse 70% 45% at 100% 92%, rgba(182, 115, 129, 0.1), transparent 50%),
+        radial-gradient(ellipse 50% 40% at 35% 75%, rgba(255, 255, 255, 0.55), transparent 55%),
+        radial-gradient(circle at 50% 50%, transparent 35%, rgba(245, 230, 232, 0.22) 100%),
+        repeating-linear-gradient(
+          125deg,
+          transparent 0,
+          transparent 14px,
+          rgba(182, 115, 129, 0.028) 14px,
+          rgba(182, 115, 129, 0.028) 15px
+        ),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200' fill='none'%3E%3Cg stroke='%23B67381' stroke-width='0.55' opacity='0.11'%3E%3Cpath d='M18 175c38-48 78-65 118-92s58-48 64-68'/%3E%3Cpath d='M0 48c48-22 88 12 128 48s72 38 72 38'/%3E%3Cpath d='M142 188c12-32 28-58 52-78'/%3E%3Cpath d='M160 24c-6 8-6 20 0 28s16 8 22 0-4-22-22-28z'/%3E%3Ccircle cx='92' cy='72' r='2.2' fill='%23B67381' stroke='none' opacity='0.14'/%3E%3C/g%3E%3C/svg%3E");
+      background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat;
+      background-size:
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        auto,
+        200px 200px;
+    }
+
+    /* Секции: тот же настроение + мелкий орнамент «кольца», чуть плотнее к базе */
+    .ref-pattern-bg {
+      background-color: rgba(250, 246, 240, 0.72);
+      background-image:
+        radial-gradient(ellipse 100% 70% at 0% 15%, rgba(182, 115, 129, 0.1) 0%, transparent 48%),
+        radial-gradient(ellipse 80% 55% at 100% 10%, rgba(201, 169, 98, 0.08) 0%, transparent 46%),
+        radial-gradient(circle at 80% 88%, rgba(182, 115, 129, 0.06) 0%, transparent 38%),
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 11px,
+          rgba(182, 115, 129, 0.022) 11px,
+          rgba(182, 115, 129, 0.022) 12px
+        ),
+        url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23B67381' stroke-width='0.45' opacity='0.07'%3E%3Cpath d='M36 36c0-9.5-7.5-17-17-17s-17 7.5-17 17 7.5 17 17 17 17-7.5 17-17zm0 0c0 9.5 7.5 17 17 17s17-7.5 17-17-7.5-17-17-17-17 7.5-17 17'/%3E%3C/g%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200' fill='none'%3E%3Cg stroke='%23B67381' stroke-width='0.5' opacity='0.09'%3E%3Cpath d='M22 172c36-46 74-62 112-88s54-46 60-66'/%3E%3Cpath d='M4 52c44-20 82 14 120 46'/%3E%3Ccircle cx='96' cy='68' r='1.8' fill='%23B67381' stroke='none' opacity='0.12'/%3E%3C/g%3E%3C/svg%3E");
+      background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat;
+      background-size: auto, auto, auto, auto, 72px 72px, 200px 200px;
     }
 
     /* Hero: лёгкая «вуаль» при скролле (теплый оттенок, не тёмный оверлей) */
@@ -249,7 +295,7 @@
     }
   </style>
 </head>
-<body class="font-body text-ink bg-cream antialiased overflow-x-hidden">
+<body class="font-body text-ink bg-transparent antialiased overflow-x-hidden">
 
 <!-- ========== HERO (референс: две колонки, пергамент, круглое фото) ========== -->
 <section id="hero" class="relative min-h-screen ref-pattern-bg flex flex-col justify-center px-5 py-20 md:py-24 overflow-hidden">
@@ -532,7 +578,7 @@
 </section>
 
 <!-- ========== FOOTER ========== -->
-<footer class="py-16 px-5 bg-gradient-to-b from-parchment to-blush/30 border-t border-mauve/10">
+<footer class="py-16 px-5 ref-pattern-bg border-t border-mauve/10">
   <div class="max-w-lg mx-auto text-center">
     <p class="text-3xl text-mauve mb-2" aria-hidden="true">♥</p>
     <p class="font-display text-xl md:text-2xl text-ink">
