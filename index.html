@@ -241,22 +241,60 @@
     }
     .cta-pulse { animation: gentlePulse 3s ease-in-out infinite; }
 
-    /* Тонкие круги таймера */
+    /* Таймер в стиле референса: акцентные обводки-кольца + убывающий прогресс */
     .cd-ring {
-      width: 4.25rem;
-      height: 4.25rem;
+      width: 5.4rem;
+      height: 5.4rem;
       border-radius: 9999px;
-      border: 1px solid rgba(182, 115, 129, 0.45);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.18);
+      --ring-color: rgba(154, 95, 108, 0.9);
+      --ring-track: rgba(154, 95, 108, 0.16);
+      transition: transform 0.25s ease;
+    }
+    .cd-ring--mauve {
+      --ring-color: rgba(154, 95, 108, 0.94);
+      --ring-track: rgba(154, 95, 108, 0.18);
+    }
+    .cd-ring--gold {
+      --ring-color: rgba(201, 169, 98, 0.85);
+      --ring-track: rgba(201, 169, 98, 0.22);
+    }
+    .cd-ring svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+      pointer-events: none;
+    }
+    .cd-ring__track,
+    .cd-ring__progress {
+      fill: none;
+      stroke-width: 5;
+      vector-effect: non-scaling-stroke;
+    }
+    .cd-ring__track {
+      stroke: var(--ring-track);
+    }
+    .cd-ring__progress {
+      stroke: var(--ring-color);
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.45s linear;
+    }
+    .cd-ring__content {
+      position: relative;
+      z-index: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.65);
-      transition: transform 0.25s ease, border-color 0.25s ease;
     }
-    .cd-ring:hover { transform: scale(1.05); border-color: rgba(182, 115, 129, 0.75); }
+    .cd-ring:hover { transform: scale(1.05); }
     @media (min-width: 768px) {
-      .cd-ring { width: 5rem; height: 5rem; }
+      .cd-ring { width: 6.2rem; height: 6.2rem; }
     }
 
     /* Акварельные пятна у портрета в hero */
@@ -328,26 +366,50 @@
         <p class="font-script text-2xl md:text-3xl text-mauve/90 pt-1" id="hero-meet">Увидимся на нашей свадьбе!</p>
       </div>
 
-      <!-- Таймер: тонкие круги и двоеточия -->
+      <!-- Таймер: крупные кольца как в референсе -->
       <div class="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-1 sm:gap-2 text-ink">
-        <div class="cd-ring">
-          <span id="cd-days" class="font-display text-2xl md:text-3xl font-semibold text-mauve leading-none">00</span>
-          <span class="text-[10px] md:text-xs uppercase tracking-wider text-ink/50 mt-0.5">дней</span>
+        <div class="cd-ring cd-ring--mauve" data-ring="days">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="cd-ring__track" cx="50" cy="50" r="45"></circle>
+            <circle class="cd-ring__progress" cx="50" cy="50" r="45"></circle>
+          </svg>
+          <div class="cd-ring__content">
+            <span id="cd-days" class="font-script text-4xl md:text-5xl text-mauve leading-none -mt-1">00</span>
+            <span class="text-[11px] md:text-xs uppercase tracking-[0.12em] text-ink/55 mt-0.5">дня</span>
+          </div>
         </div>
-        <span class="font-display text-mauve/60 text-xl md:text-2xl px-0.5">:</span>
-        <div class="cd-ring">
-          <span id="cd-hours" class="font-display text-2xl md:text-3xl font-semibold text-mauve leading-none">00</span>
-          <span class="text-[10px] md:text-xs uppercase tracking-wider text-ink/50 mt-0.5">часов</span>
+        <span class="font-display text-mauve/65 text-2xl md:text-3xl px-0.5">:</span>
+        <div class="cd-ring cd-ring--mauve" data-ring="hours">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="cd-ring__track" cx="50" cy="50" r="45"></circle>
+            <circle class="cd-ring__progress" cx="50" cy="50" r="45"></circle>
+          </svg>
+          <div class="cd-ring__content">
+            <span id="cd-hours" class="font-script text-4xl md:text-5xl text-mauve leading-none -mt-1">00</span>
+            <span class="text-[11px] md:text-xs uppercase tracking-[0.12em] text-ink/55 mt-0.5">час</span>
+          </div>
         </div>
-        <span class="font-display text-mauve/60 text-xl md:text-2xl px-0.5">:</span>
-        <div class="cd-ring">
-          <span id="cd-mins" class="font-display text-2xl md:text-3xl font-semibold text-mauve leading-none">00</span>
-          <span class="text-[10px] md:text-xs uppercase tracking-wider text-ink/50 mt-0.5">мин</span>
+        <span class="font-display text-mauve/65 text-2xl md:text-3xl px-0.5">:</span>
+        <div class="cd-ring cd-ring--mauve" data-ring="mins">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="cd-ring__track" cx="50" cy="50" r="45"></circle>
+            <circle class="cd-ring__progress" cx="50" cy="50" r="45"></circle>
+          </svg>
+          <div class="cd-ring__content">
+            <span id="cd-mins" class="font-script text-4xl md:text-5xl text-mauve leading-none -mt-1">00</span>
+            <span class="text-[11px] md:text-xs uppercase tracking-[0.12em] text-ink/55 mt-0.5">минут</span>
+          </div>
         </div>
-        <span class="font-display text-mauve/60 text-xl md:text-2xl px-0.5">:</span>
-        <div class="cd-ring">
-          <span id="cd-secs" class="font-display text-2xl md:text-3xl font-semibold text-mauve leading-none">00</span>
-          <span class="text-[10px] md:text-xs uppercase tracking-wider text-ink/50 mt-0.5">сек</span>
+        <span class="font-display text-mauve/65 text-2xl md:text-3xl px-0.5">:</span>
+        <div class="cd-ring cd-ring--mauve" data-ring="secs">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="cd-ring__track" cx="50" cy="50" r="45"></circle>
+            <circle class="cd-ring__progress" cx="50" cy="50" r="45"></circle>
+          </svg>
+          <div class="cd-ring__content">
+            <span id="cd-secs" class="font-script text-4xl md:text-5xl text-mauve leading-none -mt-1">00</span>
+            <span class="text-[11px] md:text-xs uppercase tracking-[0.12em] text-ink/55 mt-0.5">сек</span>
+          </div>
         </div>
       </div>
 
@@ -629,7 +691,7 @@
     weddingDateDisplay: '6 августа 2026',
     city: 'Ставрополь',
     /** Строка под «Место:» в hero (город, зал — как удобно) */
-    venueLine: 'г.Ставрополь',
+    venueLine: 'г.Ставрополь, банкетный зал «Кристалл»',
     /** Короткая фраза рукописным шрифтом под датой */
     meetLine: 'Увидимся на нашей свадьбе!',
 
@@ -671,9 +733,21 @@
 
   /* ---------- Таймер обратного отсчёта ---------- */
   const weddingTime = new Date(CONFIG.weddingDateISO).getTime();
+  const countdownStartSec = Math.max(1, Math.floor((weddingTime - Date.now()) / 1000));
+  const countdownStartDays = Math.max(1, Math.ceil(countdownStartSec / 86400));
 
   function pad(n) {
     return String(n).padStart(2, '0');
+  }
+
+  function setRingProgress(unit, progress) {
+    const ring = document.querySelector('.cd-ring[data-ring="' + unit + '"] .cd-ring__progress');
+    if (!ring) return;
+    const radius = 45;
+    const circumference = 2 * Math.PI * radius;
+    const p = Math.min(1, Math.max(0, progress));
+    ring.style.strokeDasharray = String(circumference);
+    ring.style.strokeDashoffset = String(circumference * (1 - p));
   }
 
   function updateCountdown() {
@@ -690,6 +764,10 @@
       els.hours.textContent = '00';
       els.mins.textContent = '00';
       els.secs.textContent = '00';
+      setRingProgress('days', 0);
+      setRingProgress('hours', 0);
+      setRingProgress('mins', 0);
+      setRingProgress('secs', 0);
       return;
     }
     const sec = Math.floor(diff / 1000);
@@ -701,6 +779,18 @@
     els.hours.textContent = pad(hours);
     els.mins.textContent = pad(mins);
     els.secs.textContent = pad(secs);
+
+    // Прогресс-обводки: убывают по мере уменьшения времени.
+    // Дни: от начального числа дней до 0, остальные — в цикле своей единицы.
+    const daysProgress = days / countdownStartDays;
+    const hoursProgress = (hours + mins / 60 + secs / 3600) / 24;
+    const minsProgress = (mins + secs / 60) / 60;
+    const secsProgress = secs / 60;
+
+    setRingProgress('days', daysProgress);
+    setRingProgress('hours', hoursProgress);
+    setRingProgress('mins', minsProgress);
+    setRingProgress('secs', secsProgress);
   }
 
   /* ---------- Hero: лёгкое усиление «вуали» при скролле (светлый блок) ---------- */
