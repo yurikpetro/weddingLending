@@ -664,10 +664,6 @@
     <p class="text-ink/75 leading-relaxed mb-8">
       Ваша заявка принята. Мы так счастливы, что вы будете с нами в этот день — бережно сохраним каждую деталь и с нетерпением ждём встречи.
     </p>
-    <button type="button" id="btn-share"
-            class="w-full py-3 rounded-full border-2 border-mauve text-mauve font-semibold hover:bg-mauve/10 transition-colors mb-3">
-      Поделиться приглашением
-    </button>
     <button type="button" id="modal-ok" class="text-sm text-ink/50 hover:text-ink underline-offset-2 hover:underline">
       Закрыть
     </button>
@@ -705,7 +701,7 @@
      * URL веб-приложения Google Apps Script после развёртывания.
      * ЗАМЕНИТЕ на свой: https://script.google.com/macros/s/ВАШ_ID/exec
      */
-    SCRIPT_URL: 'https://script.google.com/macros/s/ВАШ_ID_СКРИПТА/exec',
+    SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwF8WzejmKPaCbXJ7w5VkhK7xKEKf81YfZbEUrjtUdzWqxeH5im6rs3pbLQ8Vt0SW5WFw/exec',
   };
 
   /**
@@ -901,29 +897,6 @@
     if (e.target === thankModal) closeThankModal();
   });
 
-  document.getElementById('btn-share').addEventListener('click', async function () {
-    const shareData = {
-      title: 'Приглашение на свадьбу',
-      text: CONFIG.groomName + ' и ' + CONFIG.brideName + ' — ' + CONFIG.weddingDateDisplay,
-      url: window.location.href,
-    };
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-        alert('Ссылка скопирована в буфер обмена');
-      }
-    } catch (e) {
-      if (e && e.name !== 'AbortError') {
-        try {
-          await navigator.clipboard.writeText(window.location.href);
-          alert('Ссылка скопирована в буфер обмена');
-        } catch (_) {}
-      }
-    }
-  });
-
   /* ---------- Форма RSVP ---------- */
   const form = document.getElementById('rsvp-form');
   const formError = document.getElementById('form-error');
@@ -1041,9 +1014,10 @@
       return;
     }
 
+    const phoneRaw = document.getElementById('phone').value.trim();
     const payload = {
       fio: document.getElementById('fio').value.trim(),
-      phone: document.getElementById('phone').value.trim(),
+      phone: phoneRaw.replace(/\+/g, ''),
       attendance: attendance,
       guests: document.getElementById('guests').value,
       alcohol: alcohol,
@@ -1111,3 +1085,4 @@
 </script>
 </body>
 </html>
+Ы
