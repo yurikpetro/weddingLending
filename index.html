@@ -46,11 +46,11 @@
           colors: {
             cream: '#FAF6F0',
             parchment: '#F5F0E8',
-            blush: '#F5E6E8',
-            rose: '#E8B4B8',
-            mauve: '#B67381',
-            mauvedark: '#9a5f6c',
-            dusty: '#b36d7d',
+            blush: '#EFE1D6',
+            rose: '#D8BDA8',
+            mauve: '#A77A62',
+            mauvedark: '#8E654F',
+            dusty: '#B58A72',
             gold: '#C9A962',
             goldlight: '#E8D5A3',
             warmbeige: '#E8DDD4',
@@ -64,7 +64,7 @@
           boxShadow: {
             soft: '0 4px 24px rgba(61, 53, 48, 0.06)',
             card: '0 12px 40px rgba(61, 53, 48, 0.1)',
-            lift: '0 20px 50px rgba(182, 115, 129, 0.12)',
+            lift: '0 20px 50px rgba(167, 122, 98, 0.12)',
           },
         },
       },
@@ -87,7 +87,7 @@
      */
     @media (hover: hover) and (pointer: fine) {
       body {
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Cg transform='rotate(45 16 16)'%3E%3Ccircle cx='12' cy='18' r='6.5' stroke='%23B67381' stroke-width='1.6'/%3E%3Ccircle cx='20' cy='18' r='6.5' stroke='%23B67381' stroke-width='1.6'/%3E%3C/g%3E%3C/svg%3E") 16 16,
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Cg transform='rotate(45 16 16)'%3E%3Ccircle cx='12' cy='18' r='6.5' stroke='%23A77A62' stroke-width='1.6'/%3E%3Ccircle cx='20' cy='18' r='6.5' stroke='%23A77A62' stroke-width='1.6'/%3E%3C/g%3E%3C/svg%3E") 16 16,
           auto;
       }
       a[href],
@@ -99,7 +99,7 @@
       label,
       summary,
       select {
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Cg transform='rotate(45 16 16)'%3E%3Ccircle cx='12' cy='18' r='6.5' stroke='%23B67381' stroke-width='1.6'/%3E%3Ccircle cx='20' cy='18' r='6.5' stroke='%23B67381' stroke-width='1.6'/%3E%3C/g%3E%3C/svg%3E") 16 16,
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'%3E%3Cg transform='rotate(45 16 16)'%3E%3Ccircle cx='12' cy='18' r='6.5' stroke='%23A77A62' stroke-width='1.6'/%3E%3Ccircle cx='20' cy='18' r='6.5' stroke='%23A77A62' stroke-width='1.6'/%3E%3C/g%3E%3C/svg%3E") 16 16,
           pointer;
       }
       /* Текстовый курсор в полях ввода */
@@ -131,7 +131,7 @@
     /* Кастомный скроллбар (необязательно, лёгкий акцент) */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #F3EDE5; }
-    ::-webkit-scrollbar-thumb { background: #B67381; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: #A77A62; border-radius: 4px; }
 
     /*
      * Глобальный фон страницы: крупные «акварельные» пятна + тонкий узор + лёгкая фактура.
@@ -145,19 +145,19 @@
       pointer-events: none;
       background-color: #F3EDE5;
       background-image:
-        radial-gradient(ellipse 110% 55% at 92% 8%, rgba(182, 115, 129, 0.16), transparent 58%),
+        radial-gradient(ellipse 110% 55% at 92% 8%, rgba(167, 122, 98, 0.16), transparent 58%),
         radial-gradient(ellipse 85% 60% at -5% 35%, rgba(201, 169, 98, 0.11), transparent 52%),
-        radial-gradient(ellipse 70% 45% at 100% 92%, rgba(182, 115, 129, 0.1), transparent 50%),
+        radial-gradient(ellipse 70% 45% at 100% 92%, rgba(167, 122, 98, 0.1), transparent 50%),
         radial-gradient(ellipse 50% 40% at 35% 75%, rgba(255, 255, 255, 0.55), transparent 55%),
-        radial-gradient(circle at 50% 50%, transparent 35%, rgba(245, 230, 232, 0.22) 100%),
+        radial-gradient(circle at 50% 50%, transparent 35%, rgba(239, 225, 214, 0.22) 100%),
         repeating-linear-gradient(
           125deg,
           transparent 0,
           transparent 14px,
-          rgba(182, 115, 129, 0.028) 14px,
-          rgba(182, 115, 129, 0.028) 15px
+          rgba(167, 122, 98, 0.028) 14px,
+          rgba(167, 122, 98, 0.028) 15px
         ),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200' fill='none'%3E%3Cg stroke='%23B67381' stroke-width='0.55' opacity='0.11'%3E%3Cpath d='M18 175c38-48 78-65 118-92s58-48 64-68'/%3E%3Cpath d='M0 48c48-22 88 12 128 48s72 38 72 38'/%3E%3Cpath d='M142 188c12-32 28-58 52-78'/%3E%3Cpath d='M160 24c-6 8-6 20 0 28s16 8 22 0-4-22-22-28z'/%3E%3Ccircle cx='92' cy='72' r='2.2' fill='%23B67381' stroke='none' opacity='0.14'/%3E%3C/g%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200' fill='none'%3E%3Cg stroke='%23A77A62' stroke-width='0.55' opacity='0.11'%3E%3Cpath d='M18 175c38-48 78-65 118-92s58-48 64-68'/%3E%3Cpath d='M0 48c48-22 88 12 128 48s72 38 72 38'/%3E%3Cpath d='M142 188c12-32 28-58 52-78'/%3E%3Cpath d='M160 24c-6 8-6 20 0 28s16 8 22 0-4-22-22-28z'/%3E%3Ccircle cx='92' cy='72' r='2.2' fill='%23A77A62' stroke='none' opacity='0.14'/%3E%3C/g%3E%3C/svg%3E");
       background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat;
       background-size:
         100% 100%,
@@ -173,18 +173,18 @@
     .ref-pattern-bg {
       background-color: rgba(250, 246, 240, 0.72);
       background-image:
-        radial-gradient(ellipse 100% 70% at 0% 15%, rgba(182, 115, 129, 0.1) 0%, transparent 48%),
+        radial-gradient(ellipse 100% 70% at 0% 15%, rgba(167, 122, 98, 0.1) 0%, transparent 48%),
         radial-gradient(ellipse 80% 55% at 100% 10%, rgba(201, 169, 98, 0.08) 0%, transparent 46%),
-        radial-gradient(circle at 80% 88%, rgba(182, 115, 129, 0.06) 0%, transparent 38%),
+        radial-gradient(circle at 80% 88%, rgba(167, 122, 98, 0.06) 0%, transparent 38%),
         repeating-linear-gradient(
           45deg,
           transparent,
           transparent 11px,
-          rgba(182, 115, 129, 0.022) 11px,
-          rgba(182, 115, 129, 0.022) 12px
+          rgba(167, 122, 98, 0.022) 11px,
+          rgba(167, 122, 98, 0.022) 12px
         ),
-        url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23B67381' stroke-width='0.45' opacity='0.07'%3E%3Cpath d='M36 36c0-9.5-7.5-17-17-17s-17 7.5-17 17 7.5 17 17 17 17-7.5 17-17zm0 0c0 9.5 7.5 17 17 17s17-7.5 17-17-7.5-17-17-17-17 7.5-17 17'/%3E%3C/g%3E%3C/svg%3E"),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200' fill='none'%3E%3Cg stroke='%23B67381' stroke-width='0.5' opacity='0.09'%3E%3Cpath d='M22 172c36-46 74-62 112-88s54-46 60-66'/%3E%3Cpath d='M4 52c44-20 82 14 120 46'/%3E%3Ccircle cx='96' cy='68' r='1.8' fill='%23B67381' stroke='none' opacity='0.12'/%3E%3C/g%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23A77A62' stroke-width='0.45' opacity='0.07'%3E%3Cpath d='M36 36c0-9.5-7.5-17-17-17s-17 7.5-17 17 7.5 17 17 17 17-7.5 17-17zm0 0c0 9.5 7.5 17 17 17s17-7.5 17-17-7.5-17-17-17-17 7.5-17 17'/%3E%3C/g%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200' fill='none'%3E%3Cg stroke='%23A77A62' stroke-width='0.5' opacity='0.09'%3E%3Cpath d='M22 172c36-46 74-62 112-88s54-46 60-66'/%3E%3Cpath d='M4 52c44-20 82 14 120 46'/%3E%3Ccircle cx='96' cy='68' r='1.8' fill='%23A77A62' stroke='none' opacity='0.12'/%3E%3C/g%3E%3C/svg%3E");
       background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat;
       background-size: auto, auto, auto, auto, 72px 72px, 200px 200px;
     }
@@ -208,7 +208,7 @@
     .heart-float {
       position: absolute;
       font-size: clamp(12px, 2vw, 22px);
-      color: rgba(182, 115, 129, 0.35);
+      color: rgba(167, 122, 98, 0.35);
       pointer-events: none;
       animation: floatHeart linear infinite;
       animation-duration: var(--dur);
@@ -216,10 +216,10 @@
       left: var(--x);
     }
 
-    /* Лёгкий пульс для CTA (мальва) */
+    /* Лёгкий пульс для CTA (пудровый какао) */
     @keyframes gentlePulse {
-      0%, 100% { box-shadow: 0 4px 28px rgba(182, 115, 129, 0.35); }
-      50% { box-shadow: 0 10px 40px rgba(182, 115, 129, 0.45); }
+      0%, 100% { box-shadow: 0 4px 28px rgba(167, 122, 98, 0.35); }
+      50% { box-shadow: 0 10px 40px rgba(167, 122, 98, 0.45); }
     }
     .cta-pulse { animation: gentlePulse 3s ease-in-out infinite; }
 
@@ -233,13 +233,13 @@
       align-items: center;
       justify-content: center;
       background: rgba(255, 255, 255, 0.18);
-      --ring-color: rgba(154, 95, 108, 0.9);
-      --ring-track: rgba(154, 95, 108, 0.16);
+      --ring-color: rgba(142, 101, 79, 0.9);
+      --ring-track: rgba(142, 101, 79, 0.16);
       transition: transform 0.25s ease;
     }
     .cd-ring--mauve {
-      --ring-color: rgba(154, 95, 108, 0.94);
-      --ring-track: rgba(154, 95, 108, 0.18);
+      --ring-color: rgba(142, 101, 79, 0.94);
+      --ring-track: rgba(142, 101, 79, 0.18);
     }
     .cd-ring--gold {
       --ring-color: rgba(201, 169, 98, 0.85);
@@ -286,7 +286,7 @@
       height: 140%;
       top: -20%;
       right: -30%;
-      background: radial-gradient(circle, rgba(182, 115, 129, 0.12) 0%, transparent 55%);
+      background: radial-gradient(circle, rgba(167, 122, 98, 0.12) 0%, transparent 55%);
       pointer-events: none;
     }
     .hero-blob-2 {
@@ -511,7 +511,7 @@
   </div>
 </section>
 
-<!-- ========== RSVP (референс: шапка мальва + белая карточка) ========== -->
+<!-- ========== RSVP (референс: пудровая шапка + белая карточка) ========== -->
 <section id="rsvp" class="py-20 md:py-28 px-4 sm:px-5 ref-pattern-bg">
   <div class="max-w-6xl mx-auto rounded-3xl overflow-hidden shadow-lift ring-1 ring-mauve/10">
     <div class="bg-mauve px-6 py-5 text-center">
@@ -565,7 +565,7 @@
             </fieldset>
 
             <div class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
-              <label class="block text-sm font-medium text-ink/75 mb-2">Количество гостей <span class="text-mauve">*</span> <span class="text-ink/40 font-normal text-xs">(макс. 5)</span></label>
+              <label class="block text-sm font-medium text-ink/75 mb-2">Количество гостей(с учетом себя) <span class="text-mauve">*</span> <span class="text-ink/40 font-normal text-xs">(макс. 5)</span></label>
               <input type="hidden" id="guests" name="guests" value="1" />
               <div class="flex items-center gap-3">
                 <button type="button" id="guests-minus" class="h-10 w-10 rounded-full bg-mauve/15 text-mauve text-xl leading-none hover:bg-mauve/25 transition-colors">−</button>
@@ -868,9 +868,9 @@
       });
     }
 
-    fire(0.25, { spread: 26, startVelocity: 55, colors: ['#B67381', '#C9A962', '#FAF6F0', '#E8DDD4'] });
-    fire(0.2, { spread: 60, colors: ['#B67381', '#C9A962'] });
-    fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8, colors: ['#C9A962', '#F5E6E8', '#9a5f6c'] });
+    fire(0.25, { spread: 26, startVelocity: 55, colors: ['#A77A62', '#C9A962', '#FAF6F0', '#E8DDD4'] });
+    fire(0.2, { spread: 60, colors: ['#A77A62', '#C9A962'] });
+    fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8, colors: ['#C9A962', '#EFE1D6', '#8E654F'] });
     fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
     fire(0.1, { spread: 120, startVelocity: 45 });
   }
