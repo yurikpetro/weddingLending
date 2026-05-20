@@ -456,6 +456,134 @@
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* Тонкий орнамент между крупными секциями */
+    .section-ornament {
+      height: 4.5rem;
+      margin-block: -2.25rem;
+      position: relative;
+      z-index: 2;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .section-ornament::before,
+    .section-ornament::after {
+      content: '';
+      width: min(30vw, 12rem);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(167, 122, 98, 0.24), transparent);
+    }
+    .section-ornament__mark {
+      width: 4.75rem;
+      height: 2.75rem;
+      margin-inline: 0.75rem;
+      color: rgba(167, 122, 98, 0.42);
+      background-image: url("data:image/svg+xml,%3Csvg width='76' height='44' viewBox='0 0 76 44' xmlns='http://www.w3.org/2000/svg' fill='none'%3E%3Cg stroke='%23A77A62' stroke-width='1.1' opacity='0.62'%3E%3Cpath d='M13 22c7-10 16-15 25-15s18 5 25 15'/%3E%3Cpath d='M13 22c7 10 16 15 25 15s18-5 25-15'/%3E%3Ccircle cx='31' cy='22' r='8.5'/%3E%3Ccircle cx='45' cy='22' r='8.5'/%3E%3C/g%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+
+    /* Hero photo: двойная рамка + мягкий desktop-parallax */
+    .hero-photo-frame {
+      transform: translate3d(var(--photo-x, 0px), var(--photo-y, 0px), 0);
+      transition: transform 0.18s ease-out;
+      will-change: transform;
+    }
+    .hero-photo-frame::before,
+    .hero-photo-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+    .hero-photo-frame::before {
+      inset: -0.7rem;
+      border: 1px solid rgba(255, 255, 255, 0.92);
+      box-shadow: 0 18px 44px rgba(61, 53, 48, 0.08);
+    }
+    .hero-photo-frame::after {
+      inset: 0.65rem;
+      border: 1px solid rgba(201, 169, 98, 0.68);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.38);
+    }
+
+    /* Timeline: вертикальная линия дня + SVG-иконки */
+    .program-timeline {
+      position: relative;
+    }
+    .program-timeline::before {
+      content: '';
+      position: absolute;
+      top: 1.25rem;
+      bottom: 1.25rem;
+      left: 1.25rem;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(167, 122, 98, 0.26), transparent);
+    }
+    .program-icon {
+      position: relative;
+      z-index: 1;
+    }
+    .program-time {
+      width: 5.25rem;
+      flex: 0 0 5.25rem;
+      text-align: left;
+    }
+    @media (min-width: 640px) {
+      .program-time {
+        width: 5.75rem;
+        flex-basis: 5.75rem;
+      }
+    }
+
+    /* RSVP: на мобильном форма идёт в два шага, на desktop видны оба блока */
+    .rsvp-spinner {
+      display: none;
+      width: 1.1rem;
+      height: 1.1rem;
+      border-radius: 9999px;
+      border: 2px solid rgba(255, 255, 255, 0.36);
+      border-top-color: #fff;
+      animation: rsvpSpin 0.75s linear infinite;
+    }
+    @keyframes rsvpSpin {
+      to { transform: rotate(360deg); }
+    }
+    #submit-btn.is-loading .rsvp-spinner {
+      display: inline-block;
+    }
+    #submit-btn.is-loading .submit-label {
+      opacity: 0.82;
+    }
+    @media (max-width: 1023px) {
+      .rsvp-step-panel {
+        display: none;
+      }
+      .rsvp-step-panel.is-active {
+        display: block;
+      }
+      #rsvp-form[data-step='1'] #submit-btn,
+      #rsvp-form[data-step='1'] #rsvp-prev,
+      #rsvp-form[data-step='2'] #rsvp-next {
+        display: none;
+      }
+      #rsvp-form[data-step='1'] .rsvp-step-controls {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (min-width: 1024px) {
+      .rsvp-step-panel {
+        display: block !important;
+      }
+      .rsvp-step-controls,
+      .rsvp-progress {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body class="font-body text-ink bg-transparent antialiased overflow-x-hidden splash-active">
@@ -504,12 +632,13 @@
         <span class="font-normal italic text-dusty mx-2">&</span>
         <span id="hero-bride"></span>
       </h1>
-      <br>
-      <p class="font-body text-lg md:text-xl font-medium">Дорогие друзья и близкие, мы с радостью приглашаем вас разделить с нами самый важный день в нашей жизни — день нашей свадьбы!</p>
-      <div class="mt-8 space-y-3 text-ink/90">
-        <p class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 justify-center lg:justify-start">
+      <p class="mt-5 max-w-xl mx-auto lg:mx-0 font-body text-lg md:text-xl font-medium leading-relaxed text-ink/82">
+        Дорогие друзья и близкие, приглашаем вас разделить с нами день нашей свадьбы.
+      </p>
+      <div class="mt-8 space-y-4 text-ink/90">
+        <p class="flex flex-col gap-1 justify-center lg:justify-start">
           <span class="font-script text-2xl md:text-3xl text-mauve">Дата:</span>
-          <span id="hero-date-text" class="font-body text-lg md:text-xl font-medium"></span>
+          <span id="hero-date-text" class="font-script text-5xl sm:text-6xl md:text-7xl text-mauve leading-none"></span>
         </p>
         <p class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 justify-center lg:justify-start">
           <span class="font-script text-2xl md:text-3xl text-mauve">Место:</span>
@@ -595,7 +724,8 @@
       <div class="hero-blob-1 rounded-full blur-2xl" aria-hidden="true"></div>
       <div class="hero-blob-2" aria-hidden="true"></div>
       <div
-              class="relative w-96 h-96 sm:w-[27rem] sm:h-[27rem] md:w-[30rem] md:h-[30rem] rounded-full bg-cover bg-center shadow-card ring-[3px] ring-white ring-offset-4 ring-offset-parchment transition-transform duration-500 hover:scale-[1.02]"
+              id="hero-photo"
+              class="hero-photo-frame relative w-96 h-96 sm:w-[27rem] sm:h-[27rem] md:w-[30rem] md:h-[30rem] rounded-full bg-cover bg-center shadow-card ring-[3px] ring-white ring-offset-4 ring-offset-parchment duration-500 hover:scale-[1.02]"
               style="background-image: url('images/hero-couple.png');"
               role="img"
               aria-label="Фото пары"
@@ -607,6 +737,8 @@
     <span class="block animate-bounce text-2xl">↓</span>
   </a>
 </section>
+
+<div class="section-ornament" aria-hidden="true"><span class="section-ornament__mark"></span></div>
 
 <!-- ========== ПРОГРАММА + КАРТА (как в референсе: баннер + белая карточка) ========== -->
 <section id="program" class="py-20 md:py-28 px-4 sm:px-5 ref-pattern-bg relative overflow-hidden">
@@ -628,40 +760,64 @@
 
     <div class="bg-white rounded-3xl shadow-card p-6 md:p-10 lg:p-12 ring-1 ring-mauve/5">
       <div class="grid lg:grid-cols-2 gap-10 lg:gap-12 items-start">
-        <!-- Таймлайн: время крупно слева, описание справа -->
-        <ul class="space-y-8">
+        <!-- Таймлайн: линия дня, время по одной оси и SVG-иконки -->
+        <ul class="program-timeline space-y-8">
           <li class="flex gap-4 group">
-            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-lg group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">👰</span>
-            <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-              <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">12:00</span>
+            <span class="program-icon flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-mauve group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
+                <path d="M12 5.5c1.65 0 3 1.35 3 3 0 1.22-.73 2.27-1.78 2.74L15.5 18H8.5l2.28-6.76A3.01 3.01 0 0 1 9 8.5c0-1.65 1.35-3 3-3Z" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 18h8M10 3.8c.5-.55 1.18-.8 2-.8s1.5.25 2 .8" stroke="currentColor" stroke-width="1.45" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <div class="min-w-0 flex-1 flex items-baseline gap-4">
+              <span class="program-time font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">12:00</span>
               <span class="text-ink/65 text-sm md:text-base leading-relaxed">Утро невесты</span>
             </div>
           </li>
           <li class="flex gap-4 group">
-            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-lg group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">⛪</span>
-            <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-              <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">15:00</span>
+            <span class="program-icon flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-mauve group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3v4M10 5h4M6.5 20V9.5L12 6l5.5 3.5V20" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 20v-5a3 3 0 0 1 6 0v5M5 20h14" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div class="min-w-0 flex-1 flex items-baseline gap-4">
+              <span class="program-time font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">15:00</span>
               <span class="text-ink/65 text-sm md:text-base leading-relaxed">Венчание в церкви</span>
             </div>
           </li>
           <li class="flex gap-4 group">
-            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-parchment flex items-center justify-center text-lg group-hover:scale-110 transition-transform ring-1 ring-mauve/10" aria-hidden="true">🥂</span>
-            <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-              <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">16:30</span>
+            <span class="program-icon flex-shrink-0 w-10 h-10 rounded-full bg-parchment flex items-center justify-center text-mauve group-hover:scale-110 transition-transform ring-1 ring-mauve/10" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M7 4h5l-.7 5.2A3.05 3.05 0 0 1 8.25 12 3.05 3.05 0 0 1 5.2 9.2L4.5 4H7ZM8.25 12v6M6.2 20h4.1" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 4h5l-.7 5.2A3.05 3.05 0 0 1 16.25 12 3.05 3.05 0 0 1 13.2 9.2L12.5 4H15ZM16.25 12v6M14.2 20h4.1" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div class="min-w-0 flex-1 flex items-baseline gap-4">
+              <span class="program-time font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">16:30</span>
               <span class="text-ink/65 text-sm md:text-base leading-relaxed">Сбор гостей</span>
             </div>
           </li>
           <li class="flex gap-4 group">
-            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-parchment flex items-center justify-center text-lg group-hover:scale-110 transition-transform ring-1 ring-mauve/10" aria-hidden="true">🍽️</span>
-            <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-              <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">17:00</span>
+            <span class="program-icon flex-shrink-0 w-10 h-10 rounded-full bg-parchment flex items-center justify-center text-mauve group-hover:scale-110 transition-transform ring-1 ring-mauve/10" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M6.5 4v16M4.5 4v5.5a2 2 0 0 0 4 0V4M13.5 4v16M13.5 4c3 1.2 4.5 3.2 4.5 6.2 0 2.4-1.08 4.2-4.5 4.8" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div class="min-w-0 flex-1 flex items-baseline gap-4">
+              <span class="program-time font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">17:00</span>
               <span class="text-ink/65 text-sm md:text-base leading-relaxed">Праздничный банкет</span>
             </div>
           </li>
           <li class="flex gap-4 group">
-            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-lg group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">🌙</span>
-            <div class="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-              <span class="font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">23:00</span>
+            <span class="program-icon flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-mauve group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M19.2 15.2A7.2 7.2 0 0 1 8.8 4.8 7.8 7.8 0 1 0 19.2 15.2Z" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16.5 4.5l.35.95.95.35-.95.35-.35.95-.35-.95-.95-.35.95-.35.35-.95Z" fill="currentColor"/>
+              </svg>
+            </span>
+            <div class="min-w-0 flex-1 flex items-baseline gap-4">
+              <span class="program-time font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">23:00</span>
               <span class="text-ink/65 text-sm md:text-base leading-relaxed">Завершение вечера</span>
             </div>
           </li>
@@ -693,6 +849,8 @@
   </div>
 </section>
 
+<div class="section-ornament" aria-hidden="true"><span class="section-ornament__mark"></span></div>
+
 <!-- ========== RSVP (референс: пудровая шапка + белая карточка) ========== -->
 <section id="rsvp" class="py-20 md:py-28 px-4 sm:px-5 ref-pattern-bg">
   <div class="max-w-6xl mx-auto rounded-3xl overflow-hidden shadow-lift ring-1 ring-mauve/10">
@@ -708,57 +866,62 @@
         Чтобы мы знали, что вы будете с нами в этот особенный день
       </p>
 
-      <form id="rsvp-form" class="space-y-4">
-        <!-- Три колонки: контакты | участие + гости | еда + алкоголь — без «дыр» от разной высоты строк -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 items-start">
-          <!-- Колонка 1: текстовые поля -->
-          <div class="flex flex-col gap-3 min-w-0">
-            <div>
-              <label for="fio" class="block text-sm font-medium text-ink/75 mb-1.5">Имя и фамилия <span class="text-mauve">*</span></label>
-              <input type="text" id="fio" name="fio" required maxlength="200"
-                     class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Имя Фамилия" />
-            </div>
-            <div>
-              <label for="phone" class="block text-sm font-medium text-ink/75 mb-1.5">Телефон для связи <span class="text-mauve">*</span></label>
-              <input type="tel" id="phone" name="phone" required inputmode="numeric" autocomplete="tel"
-                     class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="+7 (___) ___-__-__" />
-            </div>
-            <div>
-              <label for="song" class="block text-sm font-medium text-ink/75 mb-1.5">Желаемая песня <span class="text-ink/45 font-normal">(необязательно)</span></label>
-              <input type="text" id="song" name="song" maxlength="300"
-                     class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Исполнитель — название" />
-            </div>
-          </div>
+      <form id="rsvp-form" class="space-y-5" data-step="1">
+        <div class="rsvp-progress grid grid-cols-2 gap-2 rounded-full bg-parchment/60 p-1 text-xs font-semibold uppercase tracking-[0.12em] text-ink/50">
+          <span id="rsvp-step-1-label" class="rounded-full bg-white px-3 py-2 text-center text-mauve shadow-soft">Контакты</span>
+          <span id="rsvp-step-2-label" class="rounded-full px-3 py-2 text-center">Предпочтения</span>
+        </div>
 
-          <!-- Колонка 2: участие + количество гостей -->
-          <div class="flex flex-col gap-3 min-w-0 md:col-span-1">
-            <fieldset class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
-              <legend class="px-1 text-sm font-medium text-ink/75">Подтверждение участия <span class="text-mauve">*</span></legend>
-              <div class="mt-1.5 space-y-1.5">
-                <label class="flex items-center gap-2.5 cursor-pointer">
-                  <input type="radio" name="attendance" value="Да" required class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
-                  <span class="text-sm text-ink/85">Да, буду</span>
-                </label>
-                <label class="flex items-center gap-2.5 cursor-pointer">
-                  <input type="radio" name="attendance" value="Нет" class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
-                  <span class="text-sm text-ink/85">Нет, не смогу</span>
-                </label>
+        <div id="rsvp-step-1" class="rsvp-step-panel is-active">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 items-start">
+            <div class="flex flex-col gap-3 min-w-0">
+              <div>
+                <label for="fio" class="block text-sm font-medium text-ink/75 mb-1.5">Имя и фамилия <span class="text-mauve">*</span></label>
+                <input type="text" id="fio" name="fio" required maxlength="200"
+                       class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Имя Фамилия" />
               </div>
-            </fieldset>
-
-            <div class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
-              <label class="block text-sm font-medium text-ink/75 mb-2">Количество гостей(с учетом себя) <span class="text-mauve">*</span> <span class="text-ink/40 font-normal text-xs">(макс. 5)</span></label>
-              <input type="hidden" id="guests" name="guests" value="1" />
-              <div class="flex items-center gap-3">
-                <button type="button" id="guests-minus" class="h-10 w-10 rounded-full bg-mauve/15 text-mauve text-xl leading-none hover:bg-mauve/25 transition-colors">−</button>
-                <div id="guests-display" class="h-10 min-w-[2.75rem] px-3 rounded-full border border-mauve/35 bg-white flex items-center justify-center text-base font-semibold text-ink">1</div>
-                <button type="button" id="guests-plus" class="h-10 w-10 rounded-full bg-mauve text-white text-xl leading-none hover:bg-mauvedark transition-colors">+</button>
+              <div>
+                <label for="phone" class="block text-sm font-medium text-ink/75 mb-1.5">Телефон для связи <span class="text-mauve">*</span></label>
+                <input type="tel" id="phone" name="phone" required inputmode="numeric" autocomplete="tel"
+                       class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="+7 (___) ___-__-__" />
+              </div>
+              <div>
+                <label for="song" class="block text-sm font-medium text-ink/75 mb-1.5">Желаемая песня <span class="text-ink/45 font-normal">(необязательно)</span></label>
+                <input type="text" id="song" name="song" maxlength="300"
+                       class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Исполнитель — название" />
               </div>
             </div>
-          </div>
 
-          <!-- Колонка 3: еда + алкоголь (на md занимает всю ширину второй строки) -->
-          <div class="flex flex-col gap-3 min-w-0 md:col-span-2 lg:col-span-1">
+            <div class="flex flex-col gap-3 min-w-0 md:col-span-1 lg:col-span-2">
+              <fieldset class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
+                <legend class="px-1 text-sm font-medium text-ink/75">Подтверждение участия <span class="text-mauve">*</span></legend>
+                <div class="mt-1.5 space-y-1.5">
+                  <label class="flex items-center gap-2.5 cursor-pointer">
+                    <input type="radio" name="attendance" value="Да" required class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                    <span class="text-sm text-ink/85">Да, буду</span>
+                  </label>
+                  <label class="flex items-center gap-2.5 cursor-pointer">
+                    <input type="radio" name="attendance" value="Нет" class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                    <span class="text-sm text-ink/85">Нет, не смогу</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <div class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
+                <label class="block text-sm font-medium text-ink/75 mb-2">Количество гостей(с учетом себя) <span class="text-mauve">*</span> <span class="text-ink/40 font-normal text-xs">(макс. 5)</span></label>
+                <input type="hidden" id="guests" name="guests" value="1" />
+                <div class="flex items-center gap-3">
+                  <button type="button" id="guests-minus" class="h-10 w-10 rounded-full bg-mauve/15 text-mauve text-xl leading-none hover:bg-mauve/25 transition-colors">−</button>
+                  <div id="guests-display" class="h-10 min-w-[2.75rem] px-3 rounded-full border border-mauve/35 bg-white flex items-center justify-center text-base font-semibold text-ink">1</div>
+                  <button type="button" id="guests-plus" class="h-10 w-10 rounded-full bg-mauve text-white text-xl leading-none hover:bg-mauvedark transition-colors">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="rsvp-step-2" class="rsvp-step-panel">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 items-start">
             <fieldset id="food-fieldset" class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
               <legend class="px-1 text-sm font-medium text-ink/75">Желаемый тип блюда <span class="text-mauve">*</span></legend>
               <div class="mt-1.5 space-y-1.5">
@@ -806,20 +969,34 @@
                 </label>
               </div>
             </fieldset>
-          </div>
-        </div>
 
-        <div>
-          <label for="comment" class="block text-sm font-medium text-ink/75 mb-1.5">Особые пожелания <span class="text-ink/45 font-normal">(необязательно)</span></label>
-          <textarea id="comment" name="comment" rows="3" maxlength="2000"
-                    class="w-full rounded-2xl border border-mauve/35 bg-parchment/50 px-5 py-3 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow resize-y placeholder:text-ink/35" placeholder="Аллергии, детское кресло, поздравление со сцены…"></textarea>
+            <div>
+              <label for="comment" class="block text-sm font-medium text-ink/75 mb-1.5">Особые пожелания <span class="text-ink/45 font-normal">(необязательно)</span></label>
+              <textarea id="comment" name="comment" rows="6" maxlength="2000"
+                        class="w-full rounded-2xl border border-mauve/35 bg-parchment/50 px-5 py-3 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow resize-y placeholder:text-ink/35" placeholder="Аллергии, детское кресло, поздравление со сцены…"></textarea>
+            </div>
+          </div>
         </div>
 
         <p id="form-error" class="hidden text-mauve text-sm text-center font-medium"></p>
 
+        <div class="rsvp-step-controls grid grid-cols-2 gap-3">
+          <button type="button" id="rsvp-prev"
+                  class="py-3 rounded-full bg-white text-mauve font-semibold shadow-soft ring-1 ring-mauve/20 hover:bg-parchment transition-all">
+            Назад
+          </button>
+          <button type="button" id="rsvp-next"
+                  class="py-3 rounded-full bg-mauve text-white font-semibold shadow-soft hover:bg-mauvedark transition-all">
+            Далее
+          </button>
+        </div>
+
         <button type="submit" id="submit-btn"
                 class="w-full py-4 rounded-full bg-mauve text-white font-display text-lg md:text-xl font-semibold tracking-[0.12em] uppercase shadow-soft hover:bg-mauvedark hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed">
-          Подтверждаю присутствие
+          <span class="inline-flex items-center justify-center gap-3">
+            <span class="rsvp-spinner" aria-hidden="true"></span>
+            <span class="submit-label">Подтверждаю присутствие</span>
+          </span>
         </button>
       </form>
     </div>
@@ -841,9 +1018,9 @@
 <div id="thank-modal" class="fixed inset-0 z-[1000] hidden items-center justify-center p-5 bg-ink/50 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="thank-title">
   <div class="modal-panel bg-white rounded-3xl max-w-md w-full p-8 md:p-10 shadow-lift ring-1 ring-mauve/15 text-center relative">
     <button type="button" id="modal-close" class="absolute top-4 right-4 text-ink/40 hover:text-mauve text-2xl leading-none w-10 h-10 rounded-full hover:bg-mauve/10 transition-colors" aria-label="Закрыть">×</button>
-    <p class="text-4xl mb-2" aria-hidden="true">💕</p>
+    <p id="thank-icon" class="text-4xl mb-2" aria-hidden="true">💕</p>
     <h3 id="thank-title" class="font-display text-3xl text-ink mb-3">Спасибо!</h3>
-    <p class="text-ink/75 leading-relaxed mb-8">
+    <p id="thank-message" class="text-ink/75 leading-relaxed mb-8">
       Ваша заявка принята. Мы так счастливы, что вы будете с нами в этот день — бережно сохраним каждую деталь и с нетерпением ждём встречи.
     </p>
     <button type="button" id="modal-ok" class="text-sm text-ink/50 hover:text-ink underline-offset-2 hover:underline">
@@ -1218,6 +1395,26 @@
     hero.style.setProperty('--hero-wash', String(base + extra));
   }
 
+  function initHeroPhotoParallax() {
+    const photo = document.getElementById('hero-photo');
+    const hero = document.getElementById('hero');
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    if (!photo || !hero || !finePointer.matches) return;
+
+    hero.addEventListener('mousemove', function (event) {
+      const rect = hero.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      photo.style.setProperty('--photo-x', (x * 12).toFixed(2) + 'px');
+      photo.style.setProperty('--photo-y', (y * 10).toFixed(2) + 'px');
+    });
+
+    hero.addEventListener('mouseleave', function () {
+      photo.style.setProperty('--photo-x', '0px');
+      photo.style.setProperty('--photo-y', '0px');
+    });
+  }
+
   /* ---------- Появление блоков при прокрутке ---------- */
   function initScrollReveal() {
     const blocks = document.querySelectorAll('body > section:not(#hero), body > footer');
@@ -1353,11 +1550,27 @@
   /* ---------- Модалка ---------- */
   const thankModal = document.getElementById('thank-modal');
 
-  function openThankModal() {
+  function openThankModal(attendance) {
+    const thankIcon = document.getElementById('thank-icon');
+    const thankTitle = document.getElementById('thank-title');
+    const thankMessage = document.getElementById('thank-message');
+
+    if (attendance === 'Нет') {
+      thankIcon.textContent = '🤍';
+      thankTitle.textContent = 'Спасибо за ответ';
+      thankMessage.textContent = 'Нам очень жаль, что вы не сможете быть рядом в этот день. Спасибо, что сообщили заранее — мы будем чувствовать ваше тепло и внимание.';
+    } else {
+      thankIcon.textContent = '💕';
+      thankTitle.textContent = 'Спасибо!';
+      thankMessage.textContent = 'Ваша заявка принята. Мы так счастливы, что вы будете с нами в этот день — бережно сохраним каждую деталь и с нетерпением ждём встречи.';
+    }
+
     thankModal.classList.remove('hidden');
     thankModal.classList.add('flex');
     document.body.style.overflow = 'hidden';
-    fireConfetti();
+    if (attendance !== 'Нет') {
+      fireConfetti();
+    }
   }
 
   function closeThankModal() {
@@ -1380,6 +1593,12 @@
   const guestsDisplay = document.getElementById('guests-display');
   const guestsMinus = document.getElementById('guests-minus');
   const guestsPlus = document.getElementById('guests-plus');
+  const rsvpStep1 = document.getElementById('rsvp-step-1');
+  const rsvpStep2 = document.getElementById('rsvp-step-2');
+  const rsvpStep1Label = document.getElementById('rsvp-step-1-label');
+  const rsvpStep2Label = document.getElementById('rsvp-step-2-label');
+  const rsvpPrev = document.getElementById('rsvp-prev');
+  const rsvpNext = document.getElementById('rsvp-next');
 
   function getCheckedValue(name) {
     const checked = form.querySelector('input[name="' + name + '"]:checked');
@@ -1474,6 +1693,47 @@
   });
   setGuestsValue(Number(guestsInput.value) || 1);
 
+  function setRsvpStep(step) {
+    form.dataset.step = String(step);
+    rsvpStep1.classList.toggle('is-active', step === 1);
+    rsvpStep2.classList.toggle('is-active', step === 2);
+    rsvpStep1Label.classList.toggle('bg-white', step === 1);
+    rsvpStep1Label.classList.toggle('text-mauve', step === 1);
+    rsvpStep1Label.classList.toggle('shadow-soft', step === 1);
+    rsvpStep2Label.classList.toggle('bg-white', step === 2);
+    rsvpStep2Label.classList.toggle('text-mauve', step === 2);
+    rsvpStep2Label.classList.toggle('shadow-soft', step === 2);
+  }
+
+  function validateRsvpContacts() {
+    const fio = document.getElementById('fio');
+    const phone = document.getElementById('phone');
+    const attendance = getCheckedValue('attendance');
+
+    if (!fio.reportValidity() || !phone.reportValidity()) {
+      return false;
+    }
+
+    if (!attendance) {
+      formError.textContent = 'Пожалуйста, подтвердите участие.';
+      formError.classList.remove('hidden');
+      return false;
+    }
+
+    formError.classList.add('hidden');
+    return true;
+  }
+
+  rsvpNext.addEventListener('click', function () {
+    if (!validateRsvpContacts()) return;
+    setRsvpStep(2);
+  });
+
+  rsvpPrev.addEventListener('click', function () {
+    formError.classList.add('hidden');
+    setRsvpStep(1);
+  });
+
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     formError.classList.add('hidden');
@@ -1483,9 +1743,16 @@
     const foodList = getCheckedValues('food');
     const alcohol = alcoholList.join(', ');
     const food = foodList.join(', ');
-    if (!attendance || !alcoholList.length || !foodList.length) {
+    if (!attendance) {
+      formError.textContent = 'Пожалуйста, подтвердите участие.';
+      formError.classList.remove('hidden');
+      setRsvpStep(1);
+      return;
+    }
+    if (attendance === 'Да' && (!alcoholList.length || !foodList.length)) {
       formError.textContent = 'Пожалуйста, заполните обязательные поля в блоках выбора.';
       formError.classList.remove('hidden');
+      setRsvpStep(2);
       return;
     }
 
@@ -1505,6 +1772,7 @@
     const urlConfigured = SCRIPT_URL && SCRIPT_URL !== SCRIPT_URL_PLACEHOLDER;
 
     submitBtn.disabled = true;
+    submitBtn.classList.add('is-loading');
 
     try {
       if (urlConfigured) {
@@ -1522,12 +1790,15 @@
       }
       form.reset();
       setGuestsValue(1);
-      openThankModal();
+      syncFoodChoices();
+      setRsvpStep(1);
+      openThankModal(attendance);
     } catch (err) {
       formError.textContent = 'Не удалось отправить. Проверьте подключение к интернету и попробуйте снова.';
       formError.classList.remove('hidden');
     } finally {
       submitBtn.disabled = false;
+      submitBtn.classList.remove('is-loading');
     }
   });
 
@@ -1558,6 +1829,7 @@
   spawnHearts();
   initScrollReveal();
   initCursorClickAnimation();
+  initHeroPhotoParallax();
   updateHeroOverlay();
   window.addEventListener('scroll', updateHeroOverlay, { passive: true });
   window.addEventListener('resize', updateHeroOverlay);
