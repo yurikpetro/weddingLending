@@ -11,9 +11,9 @@
      - venueLine — строка для подписи «Место:» в hero
      - meetLine — фраза рукописным шрифтом («Увидимся…»)
 
-  2. КАРТА (Яндекс)
-     - Карта создаётся в блоке «Программа» через Яндекс.Карты JS API.
-     - Точки карты задаются в функции initWeddingMap().
+  2. КАРТА (Яндекс — конструктор карт)
+     - Карта вставляется iframe в блоке «Программа» (см. map-widget в index.html).
+     - При смене карты в конструкторе замените src у iframe (параметр um=constructor%3A...).
      - hallLat, hallLng — для кнопки «Как добраться» (маршрут в Яндекс.Картах)
 
   3. ОТПРАВКА ФОРМЫ В GOOGLE ТАБЛИЦУ
@@ -394,18 +394,11 @@
       min-height: 280px;
       height: 320px !important;
     }
-    .map-venue-wrap > div {
-      width: 100%;
-      min-height: 280px;
-      height: 320px;
-    }
     @media (min-width: 768px) {
       .map-venue-wrap iframe { height: 380px !important; }
-      .map-venue-wrap > div { height: 380px; }
     }
     @media (min-width: 1024px) {
       .map-venue-wrap iframe { height: 420px !important; }
-      .map-venue-wrap > div { height: 420px; }
     }
   </style>
 </head>
@@ -578,7 +571,15 @@
         <!-- Карта -->
         <div class="w-full lg:sticky lg:top-8">
           <div id="venue" class="map-venue-wrap rounded-2xl ring-1 ring-mauve/10 shadow-soft">
-            <div id="wedding-map" aria-label="Карта свадебного дня"></div>
+            <!-- Карта из конструктора Яндекса: при обновлении замените src у iframe -->
+            <iframe
+                    src="https://yandex.ru/map-widget/v1/?um=constructor%3A436c5026e730b63bea5a667cef5ed6861c4b13076c13484d335c055ff392cbfc&amp;source=constructor"
+                    width="100%"
+                    height="420"
+                    frameborder="0"
+                    allowfullscreen="true"
+                    title="Карта свадебного дня"
+            ></iframe>
           </div>
           <button
                   type="button"
@@ -773,10 +774,7 @@
 
     churchName: 'Армянская апостольская церковь',
     hallName: 'Банкетный зал «Кристалл»',
-    brideMorningName: 'Утро невесты',
-    /** Координаты: утро невесты, церковь и банкетный зал */
-    brideMorningLat: 45.078850,
-    brideMorningLng: 42.136612,
+    /** Координаты: церковь и банкетный зал (Ставрополь) */
     churchLat: 45.054358,
     churchLng: 41.992073,
     hallLat: 45.028922,
@@ -985,79 +983,6 @@
   phoneInput.addEventListener('focus', function () {
     if (!this.value.trim()) this.value = '+7 (';
   });
-
-  function loadYandexMaps() {
-    return new Promise(function (resolve, reject) {
-      if (window.ymaps) {
-        resolve();
-        return;
-      }
-
-      var script = document.createElement('script');
-      script.src = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU';
-      script.async = true;
-      script.onload = resolve;
-      script.onerror = reject;
-      document.head.appendChild(script);
-    });
-  }
-
-  function initWeddingMap() {
-    var mapEl = document.getElementById('wedding-map');
-    if (!mapEl) return;
-
-    loadYandexMaps()
-      .then(function () {
-        ymaps.ready(function () {
-          var weddingMap = new ymaps.Map('wedding-map', {
-            center: [CONFIG.hallLat, CONFIG.hallLng],
-            zoom: 11,
-            controls: ['zoomControl', 'fullscreenControl'],
-          });
-
-          var points = [
-            {
-              time: '12:00',
-              title: CONFIG.brideMorningName,
-              coords: [CONFIG.brideMorningLat, CONFIG.brideMorningLng],
-              preset: 'islands#pinkIcon',
-            },
-            {
-              time: '15:00',
-              title: CONFIG.churchName,
-              coords: [CONFIG.churchLat, CONFIG.churchLng],
-              preset: 'islands#violetIcon',
-            },
-            {
-              time: '16:30',
-              title: CONFIG.hallName,
-              coords: [CONFIG.hallLat, CONFIG.hallLng],
-              preset: 'islands#redIcon',
-            },
-          ];
-
-          var collection = new ymaps.GeoObjectCollection();
-          points.forEach(function (point) {
-            collection.add(new ymaps.Placemark(point.coords, {
-              iconCaption: point.time,
-              balloonContentHeader: point.time,
-              balloonContentBody: point.title,
-            }, {
-              preset: point.preset,
-            }));
-          });
-
-          weddingMap.geoObjects.add(collection);
-          weddingMap.setBounds(collection.getBounds(), {
-            checkZoomRange: true,
-            zoomMargin: 40,
-          });
-        });
-      })
-      .catch(function () {
-        mapEl.innerHTML = '<div class="h-full min-h-[280px] flex items-center justify-center bg-parchment text-ink/65 text-center px-6">Не удалось загрузить карту. Проверьте подключение к интернету.</div>';
-      });
-  }
 
   document.getElementById('btn-directions').addEventListener('click', function () {
     // Маршрут «от вас» до банкетного зала в Яндекс.Картах (широта, долгота)
@@ -1291,7 +1216,6 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
   spawnHearts();
-  initWeddingMap();
   initScrollReveal();
   initCursorClickAnimation();
   updateHeroOverlay();
