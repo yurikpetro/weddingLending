@@ -113,6 +113,50 @@
       textarea {
         cursor: text;
       }
+
+      @keyframes cursorRingClick {
+        0% {
+          opacity: 0.95;
+          transform: translate(-50%, -50%) rotate(45deg) scale(0.72);
+        }
+        45% {
+          opacity: 0.72;
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -50%) rotate(45deg) scale(1.9);
+        }
+      }
+
+      .cursor-click-burst {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 5000;
+        width: 32px;
+        height: 32px;
+        pointer-events: none;
+        animation: cursorRingClick 520ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        filter: drop-shadow(0 3px 7px rgba(167, 122, 98, 0.18));
+      }
+
+      .cursor-click-burst span {
+        position: absolute;
+        top: 11.5px;
+        width: 13px;
+        height: 13px;
+        border: 1.7px solid rgba(167, 122, 98, 0.9);
+        border-radius: 9999px;
+        box-shadow: 0 0 0 3px rgba(201, 169, 98, 0.12);
+      }
+
+      .cursor-click-burst span:first-child {
+        left: 5.5px;
+      }
+
+      .cursor-click-burst span:last-child {
+        left: 13.5px;
+      }
     }
 
     /* Плавный скролл в духе Lenis: нативный smooth + мягкость для поддерживающих браузеров */
@@ -889,6 +933,28 @@
     }
   }
 
+  /* ---------- Анимация курсора-колец при клике ---------- */
+  function initCursorClickAnimation() {
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    if (!finePointer.matches) return;
+
+    document.addEventListener('pointerdown', function (event) {
+      if (event.pointerType === 'touch' || event.button > 0) return;
+
+      const burst = document.createElement('span');
+      burst.className = 'cursor-click-burst';
+      burst.setAttribute('aria-hidden', 'true');
+      burst.style.left = event.clientX + 'px';
+      burst.style.top = event.clientY + 'px';
+      burst.innerHTML = '<span></span><span></span>';
+
+      document.body.appendChild(burst);
+      burst.addEventListener('animationend', function () {
+        burst.remove();
+      }, { once: true });
+    });
+  }
+
   /* ---------- Маска телефона +7 ---------- */
   const phoneInput = document.getElementById('phone');
 
@@ -1227,6 +1293,7 @@
   spawnHearts();
   initWeddingMap();
   initScrollReveal();
+  initCursorClickAnimation();
   updateHeroOverlay();
   window.addEventListener('scroll', updateHeroOverlay, { passive: true });
   window.addEventListener('resize', updateHeroOverlay);
