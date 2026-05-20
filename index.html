@@ -11,7 +11,7 @@
      - venueLine — строка для подписи «Место:» в hero
      - meetLine — фраза рукописным шрифтом («Увидимся…»)
      - weddingDayMessage — текст вместо таймера в день свадьбы
-     - calendarChurchISO / calendarHallISO / calendarEndISO — события для .ics (необязательно)
+     - calendarBrideMorningISO / calendarChurchISO / calendarHallISO / calendarEndISO — события для .ics (необязательно)
 
   2. КАРТА (Яндекс — конструктор карт)
      - Карта вставляется iframe в блоке «Программа» (см. map-widget в index.html).
@@ -873,6 +873,7 @@
     /** Текст вместо таймера в день свадьбы (часовой пояс — Europe/Moscow) */
     weddingDayMessage: 'Сегодня наш день!',
     /** События для «Добавить в календарь» (.ics). Если пусто — из weddingDateISO и программы дня */
+    calendarBrideMorningISO: '',
     calendarChurchISO: '',
     calendarHallISO: '',
     calendarEndISO: '',
@@ -995,11 +996,22 @@
   function getCalendarEvents() {
     const names = CONFIG.groomName + ' и ' + CONFIG.brideName;
     const churchStart = CONFIG.calendarChurchISO || CONFIG.weddingDateISO;
+    const brideMorningStart = CONFIG.calendarBrideMorningISO || setTimeOnWeddingDayIso(churchStart, 12, 0);
+    const brideMorningEnd = churchStart;
+    const guestsGatherStart = setTimeOnWeddingDayIso(churchStart, 16, 30);
     const hallStart = CONFIG.calendarHallISO || setTimeOnWeddingDayIso(churchStart, 17, 0);
     const dayEnd = CONFIG.calendarEndISO || setTimeOnWeddingDayIso(churchStart, 23, 0);
     const churchEnd = addMsToIso(churchStart, 90 * 60 * 1000);
 
     return [
+      {
+        uid: 'wedding-bride-morning-' + brideMorningStart,
+        summary: 'Утро невесты — ' + names,
+        description: 'Сбор и подготовка. ' + CONFIG.weddingDateDisplay,
+        location: CONFIG.city,
+        start: brideMorningStart,
+        end: brideMorningEnd,
+      },
       {
         uid: 'wedding-church-' + churchStart,
         summary: 'Венчание — ' + names,
@@ -1009,9 +1021,17 @@
         end: churchEnd,
       },
       {
+        uid: 'wedding-guests-' + guestsGatherStart,
+        summary: 'Сбор гостей — ' + names,
+        description: CONFIG.hallName + '. Начало банкета в 17:00.',
+        location: CONFIG.hallName + ', ' + (CONFIG.venueLine || CONFIG.city),
+        start: guestsGatherStart,
+        end: hallStart,
+      },
+      {
         uid: 'wedding-banquet-' + hallStart,
         summary: 'Банкет — ' + names,
-        description: CONFIG.hallName + '. Сбор гостей с 16:30.',
+        description: CONFIG.hallName + '. Завершение около 23:00.',
         location: CONFIG.hallName + ', ' + (CONFIG.venueLine || CONFIG.city),
         start: hallStart,
         end: dayEnd,
