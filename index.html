@@ -559,6 +559,45 @@
     #submit-btn.is-loading .submit-label {
       opacity: 0.82;
     }
+    .rsvp-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(61, 53, 48, 0.75);
+      margin-bottom: 0.5rem;
+    }
+    @media (min-width: 1024px) {
+      .rsvp-label {
+        font-size: 1rem;
+      }
+    }
+    .rsvp-label .rsvp-required {
+      color: #A77A62;
+    }
+    .rsvp-label .rsvp-hint {
+      font-weight: 400;
+      color: rgba(61, 53, 48, 0.45);
+      font-size: 0.75rem;
+    }
+    @media (min-width: 1024px) {
+      .rsvp-label .rsvp-hint {
+        font-size: 0.875rem;
+      }
+    }
+    .rsvp-card {
+      border-radius: 1rem;
+      border: 1px solid rgba(167, 122, 98, 0.15);
+      background: rgba(245, 240, 232, 0.25);
+      padding: 0.75rem 1rem;
+    }
+    @media (min-width: 1024px) {
+      .rsvp-card {
+        padding: 1rem;
+      }
+    }
+    .rsvp-field {
+      min-width: 0;
+    }
     @media (max-width: 1023px) {
       .rsvp-step-panel {
         display: none;
@@ -584,6 +623,52 @@
         display: none !important;
       }
     }
+
+    /* Desktop: крупнее типографика и элементы (мобильная версия без изменений) */
+    @media (min-width: 1024px) {
+      html {
+        font-size: 18px;
+      }
+      .cd-ring {
+        width: 7.25rem;
+        height: 7.25rem;
+      }
+      .map-venue-wrap iframe {
+        height: 480px !important;
+      }
+      .program-time {
+        width: 6.5rem;
+        flex-basis: 6.5rem;
+      }
+      #invite-splash .splash-envelope {
+        width: min(100%, 26rem);
+      }
+    }
+    @media (min-width: 1280px) {
+      html {
+        font-size: 19px;
+      }
+      .cd-ring {
+        width: 7.75rem;
+        height: 7.75rem;
+      }
+      .map-venue-wrap iframe {
+        height: 520px !important;
+      }
+      .program-time {
+        width: 7rem;
+        flex-basis: 7rem;
+      }
+    }
+    @media (min-width: 1536px) {
+      html {
+        font-size: 20px;
+      }
+      .cd-ring {
+        width: 8.25rem;
+        height: 8.25rem;
+      }
+    }
   </style>
 </head>
 <body class="font-body text-ink bg-transparent antialiased overflow-x-hidden splash-active">
@@ -602,12 +687,12 @@
         <p id="splash-date" class="mt-2 font-body text-sm text-ink/60"></p>
       </div>
     </div>
-    <h2 id="splash-title" class="font-display text-xl sm:text-2xl text-ink mb-2">Для вас приглашение</h2>
-    <p class="text-ink/65 text-sm mb-6 max-w-xs mx-auto">Откройте, чтобы увидеть дату, программу дня и форму ответа</p>
+    <h2 id="splash-title" class="font-display text-xl sm:text-2xl lg:text-3xl text-ink mb-2">Для вас приглашение</h2>
+    <p class="text-ink/65 text-sm lg:text-base mb-6 max-w-xs lg:max-w-sm mx-auto">Откройте, чтобы увидеть дату, программу дня и форму ответа</p>
     <button
       type="button"
       id="splash-open"
-      class="cta-pulse inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-mauve text-white font-semibold text-base tracking-wide shadow-lift hover:bg-mauvedark hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+      class="cta-pulse inline-flex items-center justify-center gap-2 px-8 py-3.5 lg:px-10 lg:py-4 rounded-full bg-mauve text-white font-semibold text-base lg:text-lg tracking-wide shadow-lift hover:bg-mauvedark hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
     >
       <span>Открыть приглашение</span>
       <span class="text-lg leading-none" aria-hidden="true">♥</span>
@@ -620,31 +705,31 @@
   <div class="hero-scroll-wash absolute inset-0 bg-gradient-to-b from-mauve/10 via-transparent to-mauve/5 pointer-events-none" aria-hidden="true"></div>
   <div id="hearts-container" class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true"></div>
 
-  <div class="relative z-10 max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+  <div class="relative z-10 max-w-6xl xl:max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center">
     <!-- Текстовая колонка -->
     <div class="text-center lg:text-left order-2 lg:order-1">
-        <span class="inline-block px-5 py-2 rounded-full bg-mauve text-white text-xs md:text-sm font-semibold tracking-[0.2em] uppercase shadow-soft hover:scale-[1.02] transition-transform">
+        <span class="inline-block px-5 py-2 rounded-full bg-mauve text-white text-xs md:text-sm lg:text-base font-semibold tracking-[0.2em] uppercase shadow-soft hover:scale-[1.02] transition-transform">
           Приглашение на свадьбу
         </span>
 
-      <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-mauve leading-tight mt-2">
+      <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-mauve leading-tight mt-2">
         <span id="hero-groom"></span>
         <span class="font-normal italic text-dusty mx-2">&</span>
         <span id="hero-bride"></span>
       </h1>
-      <p class="mt-5 max-w-xl mx-auto lg:mx-0 font-body text-lg md:text-xl font-medium leading-relaxed text-ink/82">
+      <p class="mt-5 max-w-xl lg:max-w-2xl mx-auto lg:mx-0 font-body text-lg md:text-xl lg:text-2xl font-medium leading-relaxed text-ink/82">
         Дорогие друзья и близкие, приглашаем вас разделить с нами день нашей свадьбы.
       </p>
       <div class="mt-8 space-y-4 text-ink/90">
         <p class="flex flex-col gap-1 justify-center lg:justify-start">
-          <span class="font-script text-2xl md:text-3xl text-mauve">Дата:</span>
-          <span id="hero-date-text" class="font-script text-5xl sm:text-6xl md:text-7xl text-mauve leading-none"></span>
+          <span class="font-script text-2xl md:text-3xl lg:text-4xl text-mauve">Дата:</span>
+          <span id="hero-date-text" class="font-script text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-mauve leading-none"></span>
         </p>
         <p class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 justify-center lg:justify-start">
-          <span class="font-script text-2xl md:text-3xl text-mauve">Место:</span>
-          <span id="hero-city" class="font-body text-lg md:text-xl font-medium"></span>
+          <span class="font-script text-2xl md:text-3xl lg:text-4xl text-mauve">Место:</span>
+          <span id="hero-city" class="font-body text-lg md:text-xl lg:text-2xl font-medium"></span>
         </p>
-        <p class="font-script text-2xl md:text-3xl text-mauve/90 pt-1" id="hero-meet">Увидимся на нашей свадьбе!</p>
+        <p class="font-script text-2xl md:text-3xl lg:text-4xl text-mauve/90 pt-1" id="hero-meet">Увидимся на нашей свадьбе!</p>
       </div>
 
       <!-- Таймер / «Сегодня наш день!» / скрыт после дня свадьбы -->
@@ -656,41 +741,41 @@
             <circle class="cd-ring__progress" cx="50" cy="50" r="45"></circle>
           </svg>
           <div class="cd-ring__content">
-            <span id="cd-days" class="font-script text-4xl md:text-5xl text-mauve leading-none -mt-1">00</span>
-            <span class="text-[11px] md:text-xs uppercase tracking-[0.12em] text-ink/55 mt-0.5">дня</span>
+            <span id="cd-days" class="font-script text-4xl md:text-5xl lg:text-6xl text-mauve leading-none -mt-1">00</span>
+            <span class="text-[11px] md:text-xs lg:text-sm uppercase tracking-[0.12em] text-ink/55 mt-0.5">дня</span>
           </div>
         </div>
-        <span class="font-display text-mauve/65 text-2xl md:text-3xl px-0.5">:</span>
+        <span class="font-display text-mauve/65 text-2xl md:text-3xl lg:text-4xl px-0.5">:</span>
         <div class="cd-ring cd-ring--mauve" data-ring="hours">
           <svg viewBox="0 0 100 100" aria-hidden="true">
             <circle class="cd-ring__track" cx="50" cy="50" r="45"></circle>
             <circle class="cd-ring__progress" cx="50" cy="50" r="45"></circle>
           </svg>
           <div class="cd-ring__content">
-            <span id="cd-hours" class="font-script text-4xl md:text-5xl text-mauve leading-none -mt-1">00</span>
-            <span class="text-[11px] md:text-xs uppercase tracking-[0.12em] text-ink/55 mt-0.5">час</span>
+            <span id="cd-hours" class="font-script text-4xl md:text-5xl lg:text-6xl text-mauve leading-none -mt-1">00</span>
+            <span class="text-[11px] md:text-xs lg:text-sm uppercase tracking-[0.12em] text-ink/55 mt-0.5">час</span>
           </div>
         </div>
-        <span class="font-display text-mauve/65 text-2xl md:text-3xl px-0.5">:</span>
+        <span class="font-display text-mauve/65 text-2xl md:text-3xl lg:text-4xl px-0.5">:</span>
         <div class="cd-ring cd-ring--mauve" data-ring="mins">
           <svg viewBox="0 0 100 100" aria-hidden="true">
             <circle class="cd-ring__track" cx="50" cy="50" r="45"></circle>
             <circle class="cd-ring__progress" cx="50" cy="50" r="45"></circle>
           </svg>
           <div class="cd-ring__content">
-            <span id="cd-mins" class="font-script text-4xl md:text-5xl text-mauve leading-none -mt-1">00</span>
-            <span class="text-[11px] md:text-xs uppercase tracking-[0.12em] text-ink/55 mt-0.5">минут</span>
+            <span id="cd-mins" class="font-script text-4xl md:text-5xl lg:text-6xl text-mauve leading-none -mt-1">00</span>
+            <span class="text-[11px] md:text-xs lg:text-sm uppercase tracking-[0.12em] text-ink/55 mt-0.5">минут</span>
           </div>
         </div>
-        <span class="font-display text-mauve/65 text-2xl md:text-3xl px-0.5">:</span>
+        <span class="font-display text-mauve/65 text-2xl md:text-3xl lg:text-4xl px-0.5">:</span>
         <div class="cd-ring cd-ring--mauve" data-ring="secs">
           <svg viewBox="0 0 100 100" aria-hidden="true">
             <circle class="cd-ring__track" cx="50" cy="50" r="45"></circle>
             <circle class="cd-ring__progress" cx="50" cy="50" r="45"></circle>
           </svg>
           <div class="cd-ring__content">
-            <span id="cd-secs" class="font-script text-4xl md:text-5xl text-mauve leading-none -mt-1">00</span>
-            <span class="text-[11px] md:text-xs uppercase tracking-[0.12em] text-ink/55 mt-0.5">сек</span>
+            <span id="cd-secs" class="font-script text-4xl md:text-5xl lg:text-6xl text-mauve leading-none -mt-1">00</span>
+            <span class="text-[11px] md:text-xs lg:text-sm uppercase tracking-[0.12em] text-ink/55 mt-0.5">сек</span>
           </div>
         </div>
         </div>
@@ -700,10 +785,10 @@
         </div>
       </div>
 
-      <div class="mt-10 flex w-full max-w-md flex-col items-stretch justify-center gap-3 mx-auto lg:mx-0">
+      <div class="mt-10 flex w-full max-w-md lg:max-w-lg flex-col items-stretch justify-center gap-3 mx-auto lg:mx-0">
       <a
               href="#rsvp"
-              class="cta-pulse inline-flex min-h-[3.75rem] w-full items-center justify-center gap-2 px-8 py-4 rounded-full bg-mauve text-white font-semibold text-base md:text-lg tracking-wide shadow-lift hover:bg-mauvedark hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+              class="cta-pulse inline-flex min-h-[3.75rem] lg:min-h-[4.25rem] w-full items-center justify-center gap-2 px-8 py-4 lg:py-5 rounded-full bg-mauve text-white font-semibold text-base md:text-lg lg:text-xl tracking-wide shadow-lift hover:bg-mauvedark hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
       >
         <span>Принять приглашение</span>
         <span class="text-xl leading-none" aria-hidden="true">♥</span>
@@ -711,7 +796,7 @@
       <button
               type="button"
               id="btn-add-calendar"
-              class="inline-flex min-h-[3.75rem] w-full items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-mauve font-semibold text-base md:text-lg tracking-wide shadow-soft ring-1 ring-mauve/25 hover:bg-parchment hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+              class="inline-flex min-h-[3.75rem] lg:min-h-[4.25rem] w-full items-center justify-center gap-2 px-8 py-4 lg:py-5 rounded-full bg-white text-mauve font-semibold text-base md:text-lg lg:text-xl tracking-wide shadow-soft ring-1 ring-mauve/25 hover:bg-parchment hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
       >
         <span aria-hidden="true">📅</span>
         <span>Добавить в календарь</span>
@@ -725,7 +810,7 @@
       <div class="hero-blob-2" aria-hidden="true"></div>
       <div
               id="hero-photo"
-              class="hero-photo-frame relative w-96 h-96 sm:w-[27rem] sm:h-[27rem] md:w-[30rem] md:h-[30rem] rounded-full bg-cover bg-center shadow-card ring-[3px] ring-white ring-offset-4 ring-offset-parchment duration-500 hover:scale-[1.02]"
+              class="hero-photo-frame relative w-96 h-96 sm:w-[27rem] sm:h-[27rem] md:w-[30rem] md:h-[30rem] lg:w-[32rem] lg:h-[32rem] xl:w-[36rem] xl:h-[36rem] rounded-full bg-cover bg-center shadow-card ring-[3px] ring-white ring-offset-4 ring-offset-parchment duration-500 hover:scale-[1.02]"
               style="background-image: url('images/hero-couple.png');"
               role="img"
               aria-label="Фото пары"
@@ -741,8 +826,8 @@
 <div class="section-ornament" aria-hidden="true"><span class="section-ornament__mark"></span></div>
 
 <!-- ========== ПРОГРАММА + КАРТА (как в референсе: баннер + белая карточка) ========== -->
-<section id="program" class="py-20 md:py-28 px-4 sm:px-5 ref-pattern-bg relative overflow-hidden">
-  <div class="max-w-5xl mx-auto relative z-10">
+<section id="program" class="py-20 md:py-28 lg:py-32 px-4 sm:px-5 ref-pattern-bg relative overflow-hidden">
+  <div class="max-w-5xl xl:max-w-6xl mx-auto relative z-10">
     <!-- Заголовок секции -->
     <div class="flex flex-col items-center mb-5 md:mb-6">
       <div class="text-mauve mb-1.5 opacity-70" aria-hidden="true">
@@ -752,26 +837,26 @@
         </svg>
       </div>
       <div class="inline-flex items-center justify-center px-3 sm:px-5 py-1.5 border-y border-mauve/20">
-        <h2 class="font-display text-xl sm:text-2xl md:text-3xl font-semibold tracking-[0.14em] uppercase text-center leading-snug text-mauve">
+        <h2 class="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold tracking-[0.14em] uppercase text-center leading-snug text-mauve">
           Программа свадебного дня
         </h2>
       </div>
     </div>
 
-    <div class="bg-white rounded-3xl shadow-card p-6 md:p-10 lg:p-12 ring-1 ring-mauve/5">
+    <div class="bg-white rounded-3xl shadow-card p-6 md:p-10 lg:p-14 ring-1 ring-mauve/5">
       <div class="grid lg:grid-cols-2 gap-10 lg:gap-12 items-start">
         <!-- Таймлайн: линия дня, время по одной оси и SVG-иконки -->
         <ul class="program-timeline space-y-8">
           <li class="flex gap-4 group">
-            <span class="program-icon flex-shrink-0 w-10 h-10 rounded-full bg-blush/60 flex items-center justify-center text-mauve group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">
-              <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
+            <span class="program-icon flex-shrink-0 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-blush/60 flex items-center justify-center text-mauve group-hover:scale-110 transition-transform shadow-soft" aria-hidden="true">
+              <svg class="w-[21px] h-[21px] lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="none">
                 <path d="M12 5.5c1.65 0 3 1.35 3 3 0 1.22-.73 2.27-1.78 2.74L15.5 18H8.5l2.28-6.76A3.01 3.01 0 0 1 9 8.5c0-1.65 1.35-3 3-3Z" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M8 18h8M10 3.8c.5-.55 1.18-.8 2-.8s1.5.25 2 .8" stroke="currentColor" stroke-width="1.45" stroke-linecap="round"/>
               </svg>
             </span>
             <div class="min-w-0 flex-1 flex items-baseline gap-4">
-              <span class="program-time font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">12:00</span>
-              <span class="text-ink/65 text-sm md:text-base leading-relaxed">Утро невесты</span>
+              <span class="program-time font-display text-2xl md:text-3xl lg:text-4xl text-mauve font-semibold tabular-nums">12:00</span>
+              <span class="text-ink/65 text-sm md:text-base lg:text-lg leading-relaxed">Утро невесты</span>
             </div>
           </li>
           <li class="flex gap-4 group">
@@ -782,8 +867,8 @@
               </svg>
             </span>
             <div class="min-w-0 flex-1 flex items-baseline gap-4">
-              <span class="program-time font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">15:00</span>
-              <span class="text-ink/65 text-sm md:text-base leading-relaxed">Венчание в церкви</span>
+              <span class="program-time font-display text-2xl md:text-3xl lg:text-4xl text-mauve font-semibold tabular-nums">15:00</span>
+              <span class="text-ink/65 text-sm md:text-base lg:text-lg leading-relaxed">Венчание в церкви</span>
             </div>
           </li>
           <li class="flex gap-4 group">
@@ -794,8 +879,8 @@
               </svg>
             </span>
             <div class="min-w-0 flex-1 flex items-baseline gap-4">
-              <span class="program-time font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">16:30</span>
-              <span class="text-ink/65 text-sm md:text-base leading-relaxed">Сбор гостей</span>
+              <span class="program-time font-display text-2xl md:text-3xl lg:text-4xl text-mauve font-semibold tabular-nums">16:30</span>
+              <span class="text-ink/65 text-sm md:text-base lg:text-lg leading-relaxed">Сбор гостей</span>
             </div>
           </li>
           <li class="flex gap-4 group">
@@ -805,8 +890,8 @@
               </svg>
             </span>
             <div class="min-w-0 flex-1 flex items-baseline gap-4">
-              <span class="program-time font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">17:00</span>
-              <span class="text-ink/65 text-sm md:text-base leading-relaxed">Праздничный банкет</span>
+              <span class="program-time font-display text-2xl md:text-3xl lg:text-4xl text-mauve font-semibold tabular-nums">17:00</span>
+              <span class="text-ink/65 text-sm md:text-base lg:text-lg leading-relaxed">Праздничный банкет</span>
             </div>
           </li>
           <li class="flex gap-4 group">
@@ -817,8 +902,8 @@
               </svg>
             </span>
             <div class="min-w-0 flex-1 flex items-baseline gap-4">
-              <span class="program-time font-display text-2xl md:text-3xl text-mauve font-semibold tabular-nums">23:00</span>
-              <span class="text-ink/65 text-sm md:text-base leading-relaxed">Завершение вечера</span>
+              <span class="program-time font-display text-2xl md:text-3xl lg:text-4xl text-mauve font-semibold tabular-nums">23:00</span>
+              <span class="text-ink/65 text-sm md:text-base lg:text-lg leading-relaxed">Завершение вечера</span>
             </div>
           </li>
         </ul>
@@ -839,7 +924,7 @@
           <button
                   type="button"
                   id="btn-directions"
-                  class="mt-5 w-full sm:w-auto px-8 py-3 rounded-full bg-mauve text-white font-medium tracking-wide hover:bg-mauvedark hover:scale-[1.02] active:scale-[0.98] transition-all shadow-soft"
+                  class="mt-5 w-full sm:w-auto px-8 py-3 lg:py-4 lg:px-10 lg:text-lg rounded-full bg-mauve text-white font-medium tracking-wide hover:bg-mauvedark hover:scale-[1.02] active:scale-[0.98] transition-all shadow-soft"
           >
             Как добраться
           </button>
@@ -852,17 +937,17 @@
 <div class="section-ornament" aria-hidden="true"><span class="section-ornament__mark"></span></div>
 
 <!-- ========== RSVP (референс: пудровая шапка + белая карточка) ========== -->
-<section id="rsvp" class="py-20 md:py-28 px-4 sm:px-5 ref-pattern-bg">
-  <div class="max-w-6xl mx-auto rounded-3xl overflow-hidden shadow-lift ring-1 ring-mauve/10">
-    <div class="bg-mauve px-6 py-5 text-center">
-      <h2 class="font-display text-xl sm:text-2xl md:text-3xl font-semibold text-white tracking-[0.15em] uppercase">
+<section id="rsvp" class="py-20 md:py-28 lg:py-32 px-4 sm:px-5 ref-pattern-bg">
+  <div class="max-w-6xl xl:max-w-7xl mx-auto rounded-3xl overflow-hidden shadow-lift ring-1 ring-mauve/10">
+    <div class="bg-mauve px-6 py-5 lg:py-6 text-center">
+      <h2 class="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-white tracking-[0.15em] uppercase">
         Регистрация гостя
       </h2>
     </div>
 
-    <div class="bg-white px-6 md:px-10 py-8 md:py-10">
-      <h3 class="font-display text-2xl md:text-3xl text-ink text-center">Оставьте свои контакты</h3>
-      <p class="font-script text-xl md:text-2xl text-mauve text-center mt-2 mb-8">
+    <div class="bg-white px-6 md:px-10 lg:px-14 py-8 md:py-10 lg:py-12">
+      <h3 class="font-display text-2xl md:text-3xl lg:text-4xl text-ink text-center">Оставьте свои контакты</h3>
+      <p class="font-script text-xl md:text-2xl lg:text-3xl text-mauve text-center mt-2 mb-8 lg:mb-10">
         Чтобы мы знали, что вы будете с нами в этот особенный день
       </p>
 
@@ -873,107 +958,81 @@
         </div>
 
         <div id="rsvp-step-1" class="rsvp-step-panel is-active">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 items-start">
-            <div class="flex flex-col gap-3 min-w-0">
-              <div>
-                <label for="fio" class="block text-sm font-medium text-ink/75 mb-1.5">Имя и фамилия <span class="text-mauve">*</span></label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 lg:gap-x-8 gap-y-4 items-start">
+            <div class="flex flex-col gap-4 min-w-0">
+              <div class="rsvp-field">
+                <label for="fio" class="rsvp-label">Имя и фамилия <span class="rsvp-required">*</span></label>
                 <input type="text" id="fio" name="fio" required maxlength="200"
-                       class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Имя Фамилия" />
+                       class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 lg:py-3.5 lg:text-lg text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Имя Фамилия" />
               </div>
-              <div>
-                <label for="phone" class="block text-sm font-medium text-ink/75 mb-1.5">Телефон для связи <span class="text-mauve">*</span></label>
+              <div class="rsvp-field">
+                <label for="phone" class="rsvp-label">Телефон для связи <span class="rsvp-required">*</span></label>
                 <input type="tel" id="phone" name="phone" required inputmode="numeric" autocomplete="tel"
-                       class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="+7 (___) ___-__-__" />
+                       class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 lg:py-3.5 lg:text-lg text-ink focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="+7 (___) ___-__-__" />
               </div>
-              <div>
-                <label for="song" class="block text-sm font-medium text-ink/75 mb-1.5">Желаемая песня <span class="text-ink/45 font-normal">(необязательно)</span></label>
+              <div class="rsvp-field">
+                <label for="song" class="rsvp-label">Желаемая песня <span class="rsvp-hint">(необязательно)</span></label>
                 <input type="text" id="song" name="song" maxlength="300"
-                       class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Исполнитель — название" />
+                       class="w-full rounded-full border border-mauve/35 bg-parchment/50 px-5 py-3 lg:py-3.5 lg:text-lg focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow placeholder:text-ink/35" placeholder="Исполнитель — название" />
               </div>
             </div>
 
-            <div class="flex flex-col gap-3 min-w-0 md:col-span-1 lg:col-span-2">
-              <fieldset class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
-                <legend class="px-1 text-sm font-medium text-ink/75">Подтверждение участия <span class="text-mauve">*</span></legend>
-                <div class="mt-1.5 space-y-1.5">
+            <div class="flex flex-col gap-4 min-w-0">
+              <div class="rsvp-card">
+                <p class="rsvp-label" id="attendance-heading">Подтверждение участия <span class="rsvp-required">*</span></p>
+                <div role="radiogroup" aria-labelledby="attendance-heading" class="space-y-2">
                   <label class="flex items-center gap-2.5 cursor-pointer">
-                    <input type="radio" name="attendance" value="Да" required class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
-                    <span class="text-sm text-ink/85">Да, буду</span>
+                    <input type="radio" name="attendance" value="Да" required class="h-4 w-4 lg:h-5 lg:w-5 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                    <span class="text-sm lg:text-base text-ink/85">Да, буду</span>
                   </label>
                   <label class="flex items-center gap-2.5 cursor-pointer">
-                    <input type="radio" name="attendance" value="Нет" class="h-4 w-4 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
-                    <span class="text-sm text-ink/85">Нет, не смогу</span>
+                    <input type="radio" name="attendance" value="Нет" class="h-4 w-4 lg:h-5 lg:w-5 shrink-0 border-mauve/50 text-mauve focus:ring-mauve" />
+                    <span class="text-sm lg:text-base text-ink/85">Нет, не смогу</span>
                   </label>
                 </div>
-              </fieldset>
+              </div>
 
-              <div class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
-                <label class="block text-sm font-medium text-ink/75 mb-2">Количество гостей(с учетом себя) <span class="text-mauve">*</span> <span class="text-ink/40 font-normal text-xs">(макс. 5)</span></label>
+              <div class="rsvp-card">
+                <p class="rsvp-label" id="guests-heading">Количество гостей (с учётом себя) <span class="rsvp-required">*</span> <span class="rsvp-hint">(макс. 5)</span></p>
                 <input type="hidden" id="guests" name="guests" value="1" />
-                <div class="flex items-center gap-3">
-                  <button type="button" id="guests-minus" class="h-10 w-10 rounded-full bg-mauve/15 text-mauve text-xl leading-none hover:bg-mauve/25 transition-colors">−</button>
-                  <div id="guests-display" class="h-10 min-w-[2.75rem] px-3 rounded-full border border-mauve/35 bg-white flex items-center justify-center text-base font-semibold text-ink">1</div>
-                  <button type="button" id="guests-plus" class="h-10 w-10 rounded-full bg-mauve text-white text-xl leading-none hover:bg-mauvedark transition-colors">+</button>
+                <div role="group" aria-labelledby="guests-heading" class="flex items-center gap-3">
+                  <button type="button" id="guests-minus" class="h-10 w-10 lg:h-12 lg:w-12 rounded-full bg-mauve/15 text-mauve text-xl lg:text-2xl leading-none hover:bg-mauve/25 transition-colors">−</button>
+                  <div id="guests-display" class="h-10 lg:h-12 min-w-[2.75rem] lg:min-w-[3.25rem] px-3 rounded-full border border-mauve/35 bg-white flex items-center justify-center text-base lg:text-lg font-semibold text-ink">1</div>
+                  <button type="button" id="guests-plus" class="h-10 w-10 lg:h-12 lg:w-12 rounded-full bg-mauve text-white text-xl lg:text-2xl leading-none hover:bg-mauvedark transition-colors">+</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div id="rsvp-step-2" class="rsvp-step-panel">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 items-start">
-            <fieldset id="food-fieldset" class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
-              <legend class="px-1 text-sm font-medium text-ink/75">Желаемый тип блюда <span class="text-mauve">*</span></legend>
-              <div class="mt-1.5 space-y-1.5">
-                <label class="food-option-label flex items-center gap-2.5 cursor-pointer has-[:disabled]:opacity-40 has-[:disabled]:cursor-not-allowed">
-                  <input type="checkbox" name="food" value="Мясо" class="h-4 w-4 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
-                  <span class="text-sm text-ink/85">Мясо</span>
-                </label>
-                <label class="food-option-label flex items-center gap-2.5 cursor-pointer has-[:disabled]:opacity-40 has-[:disabled]:cursor-not-allowed">
-                  <input type="checkbox" name="food" value="Рыба" class="h-4 w-4 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
-                  <span class="text-sm text-ink/85">Рыба</span>
-                </label>
-                <label class="food-option-label flex items-center gap-2.5 cursor-pointer has-[:disabled]:opacity-40 has-[:disabled]:cursor-not-allowed">
-                  <input type="checkbox" name="food" value="Птица" class="h-4 w-4 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
-                  <span class="text-sm text-ink/85">Птица</span>
-                </label>
-                <label class="food-option-label flex items-center gap-2.5 cursor-pointer has-[:disabled]:opacity-40 has-[:disabled]:cursor-not-allowed">
-                  <input type="checkbox" name="food" value="Вегетарианское" class="h-4 w-4 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
-                  <span class="text-sm text-ink/85">Вегетарианское</span>
+        <div id="rsvp-step-2" class="rsvp-step-panel lg:pt-2 lg:border-t lg:border-mauve/10">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 lg:gap-x-8 gap-y-4 items-stretch">
+            <div class="rsvp-card h-full">
+              <p class="rsvp-label" id="alcohol-heading">Предпочитаемый алкоголь <span class="rsvp-required">*</span></p>
+              <div role="group" aria-labelledby="alcohol-heading" class="space-y-2">
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="checkbox" name="alcohol" value="Шампанское / игристое" class="h-4 w-4 lg:h-5 lg:w-5 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm lg:text-base text-ink/85">Шампанское / игристое</span>
                 </label>
                 <label class="flex items-center gap-2.5 cursor-pointer">
-                  <input type="checkbox" id="food-all" name="food" value="Всё ем" class="h-4 w-4 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
-                  <span class="text-sm text-ink/85">Всё ем</span>
+                  <input type="checkbox" name="alcohol" value="Вино (красное/белое)" class="h-4 w-4 lg:h-5 lg:w-5 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm lg:text-base text-ink/85">Вино (красное/белое)</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="checkbox" name="alcohol" value="Крепкие напитки" class="h-4 w-4 lg:h-5 lg:w-5 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm lg:text-base text-ink/85">Крепкие напитки</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input type="checkbox" name="alcohol" value="Безалкогольные напитки" class="h-4 w-4 lg:h-5 lg:w-5 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
+                  <span class="text-sm lg:text-base text-ink/85">Безалкогольные напитки</span>
                 </label>
               </div>
-            </fieldset>
+            </div>
 
-            <fieldset class="rounded-2xl border border-mauve/15 bg-parchment/25 p-3">
-              <legend class="px-1 text-sm font-medium text-ink/75">Предпочитаемый алкоголь <span class="text-mauve">*</span></legend>
-              <div class="mt-1.5 space-y-1.5">
-                <label class="flex items-center gap-2.5 cursor-pointer">
-                  <input type="checkbox" name="alcohol" value="Шампанское / игристое" class="h-4 w-4 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
-                  <span class="text-sm text-ink/85">Шампанское / игристое</span>
-                </label>
-                <label class="flex items-center gap-2.5 cursor-pointer">
-                  <input type="checkbox" name="alcohol" value="Вино (красное/белое)" class="h-4 w-4 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
-                  <span class="text-sm text-ink/85">Вино (красное/белое)</span>
-                </label>
-                <label class="flex items-center gap-2.5 cursor-pointer">
-                  <input type="checkbox" name="alcohol" value="Крепкие напитки" class="h-4 w-4 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
-                  <span class="text-sm text-ink/85">Крепкие напитки</span>
-                </label>
-                <label class="flex items-center gap-2.5 cursor-pointer">
-                  <input type="checkbox" name="alcohol" value="Безалкогольные напитки" class="h-4 w-4 shrink-0 rounded border-mauve/50 text-mauve focus:ring-mauve" />
-                  <span class="text-sm text-ink/85">Безалкогольные напитки</span>
-                </label>
-              </div>
-            </fieldset>
-
-            <div>
-              <label for="comment" class="block text-sm font-medium text-ink/75 mb-1.5">Особые пожелания <span class="text-ink/45 font-normal">(необязательно)</span></label>
+            <div class="rsvp-card h-full flex flex-col min-h-0">
+              <label for="comment" class="rsvp-label">Особые пожелания <span class="rsvp-hint">(необязательно)</span></label>
               <textarea id="comment" name="comment" rows="6" maxlength="2000"
-                        class="w-full rounded-2xl border border-mauve/35 bg-parchment/50 px-5 py-3 focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow resize-y placeholder:text-ink/35" placeholder="Аллергии, детское кресло, поздравление со сцены…"></textarea>
+                        class="w-full flex-1 min-h-[9.5rem] lg:min-h-[11rem] rounded-2xl border border-mauve/35 bg-parchment/50 px-5 py-3 lg:py-3.5 lg:text-lg focus:ring-2 focus:ring-mauve/30 focus:border-mauve outline-none transition-shadow resize-y placeholder:text-ink/35" placeholder="Аллергии, детское кресло, поздравление со сцены…"></textarea>
             </div>
           </div>
         </div>
@@ -992,7 +1051,7 @@
         </div>
 
         <button type="submit" id="submit-btn"
-                class="w-full py-4 rounded-full bg-mauve text-white font-display text-lg md:text-xl font-semibold tracking-[0.12em] uppercase shadow-soft hover:bg-mauvedark hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed">
+                class="w-full py-4 lg:py-5 rounded-full bg-mauve text-white font-display text-lg md:text-xl lg:text-2xl font-semibold tracking-[0.12em] uppercase shadow-soft hover:bg-mauvedark hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed">
           <span class="inline-flex items-center justify-center gap-3">
             <span class="rsvp-spinner" aria-hidden="true"></span>
             <span class="submit-label">Подтверждаю присутствие</span>
@@ -1004,23 +1063,23 @@
 </section>
 
 <!-- ========== FOOTER ========== -->
-<footer class="py-16 px-5 ref-pattern-bg border-t border-mauve/10">
-  <div class="max-w-lg mx-auto text-center">
-    <p class="text-3xl text-mauve mb-2" aria-hidden="true">♥</p>
-    <p class="font-display text-xl md:text-2xl text-ink">
+<footer class="py-16 lg:py-20 px-5 ref-pattern-bg border-t border-mauve/10">
+  <div class="max-w-lg xl:max-w-xl mx-auto text-center">
+    <p class="text-3xl lg:text-4xl text-mauve mb-2" aria-hidden="true">♥</p>
+    <p class="font-display text-xl md:text-2xl lg:text-3xl text-ink">
       С любовью, <span id="footer-names"></span>
     </p>
-    <p id="footer-meta" class="mt-3 text-ink/65 text-sm"></p>
+    <p id="footer-meta" class="mt-3 text-ink/65 text-sm lg:text-base"></p>
   </div>
 </footer>
 
 <!-- ========== МОДАЛКА СПАСИБО ========== -->
 <div id="thank-modal" class="fixed inset-0 z-[1000] hidden items-center justify-center p-5 bg-ink/50 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="thank-title">
-  <div class="modal-panel bg-white rounded-3xl max-w-md w-full p-8 md:p-10 shadow-lift ring-1 ring-mauve/15 text-center relative">
+  <div class="modal-panel bg-white rounded-3xl max-w-md lg:max-w-lg w-full p-8 md:p-10 lg:p-12 shadow-lift ring-1 ring-mauve/15 text-center relative">
     <button type="button" id="modal-close" class="absolute top-4 right-4 text-ink/40 hover:text-mauve text-2xl leading-none w-10 h-10 rounded-full hover:bg-mauve/10 transition-colors" aria-label="Закрыть">×</button>
     <p id="thank-icon" class="text-4xl mb-2" aria-hidden="true">💕</p>
-    <h3 id="thank-title" class="font-display text-3xl text-ink mb-3">Спасибо!</h3>
-    <p id="thank-message" class="text-ink/75 leading-relaxed mb-8">
+    <h3 id="thank-title" class="font-display text-3xl lg:text-4xl text-ink mb-3">Спасибо!</h3>
+    <p id="thank-message" class="text-ink/75 text-base lg:text-lg leading-relaxed mb-8">
       Ваша заявка принята. Мы так счастливы, что вы будете с нами в этот день — бережно сохраним каждую деталь и с нетерпением ждём встречи.
     </p>
     <button type="button" id="modal-ok" class="text-sm text-ink/50 hover:text-ink underline-offset-2 hover:underline">
@@ -1612,68 +1671,19 @@
     );
   }
 
-  const foodAllInput = document.getElementById('food-all');
+  const submitLabel = submitBtn.querySelector('.submit-label');
 
-  function foodByValue(val) {
-    return form.querySelector('input[name="food"][value="' + val + '"]');
+  function updateSubmitLabel() {
+    const attendance = getCheckedValue('attendance');
+    submitLabel.textContent = attendance === 'Нет'
+      ? 'Сообщить, что не смогу'
+      : 'Подтверждаю присутствие';
   }
 
-  const foodMeat = foodByValue('Мясо');
-  const foodFish = foodByValue('Рыба');
-  const foodPoultry = foodByValue('Птица');
-  const foodVeg = foodByValue('Вегетарианское');
-  const foodSpecificFour = [foodMeat, foodFish, foodPoultry, foodVeg];
-
-  function disableAndUncheckFour() {
-    foodSpecificFour.forEach(function (el) {
-      el.checked = false;
-      el.disabled = true;
-    });
-  }
-
-  /**
-   * «Всё ем» — снимает и блокирует четыре пункта.
-   * Все четыре (мясо, рыба, птица, вег.) отмечены — автоматически «Всё ем», те же четыре снимаются.
-   * Только «Вегетарианское» — мясо/рыба/птица снимаются и блокируются.
-   */
-  function syncFoodChoices() {
-    var m = foodMeat.checked;
-    var f = foodFish.checked;
-    var p = foodPoultry.checked;
-    var v = foodVeg.checked;
-    var allFourSpecific = m && f && p && v;
-
-    if (foodAllInput.checked) {
-      disableAndUncheckFour();
-      return;
-    }
-
-    if (allFourSpecific) {
-      foodAllInput.checked = true;
-      disableAndUncheckFour();
-      return;
-    }
-
-    if (foodVeg.checked) {
-      foodMeat.checked = false;
-      foodFish.checked = false;
-      foodPoultry.checked = false;
-      foodMeat.disabled = true;
-      foodFish.disabled = true;
-      foodPoultry.disabled = true;
-      foodVeg.disabled = false;
-      return;
-    }
-
-    foodSpecificFour.forEach(function (el) {
-      el.disabled = false;
-    });
-  }
-
-  form.querySelectorAll('input[name="food"]').forEach(function (el) {
-    el.addEventListener('change', syncFoodChoices);
+  form.querySelectorAll('input[name="attendance"]').forEach(function (el) {
+    el.addEventListener('change', updateSubmitLabel);
   });
-  syncFoodChoices();
+  updateSubmitLabel();
 
   function setGuestsValue(value) {
     const v = Math.min(5, Math.max(1, value));
@@ -1740,16 +1750,14 @@
 
     const attendance = getCheckedValue('attendance');
     const alcoholList = getCheckedValues('alcohol');
-    const foodList = getCheckedValues('food');
     const alcohol = alcoholList.join(', ');
-    const food = foodList.join(', ');
     if (!attendance) {
       formError.textContent = 'Пожалуйста, подтвердите участие.';
       formError.classList.remove('hidden');
       setRsvpStep(1);
       return;
     }
-    if (attendance === 'Да' && (!alcoholList.length || !foodList.length)) {
+    if (attendance === 'Да' && !alcoholList.length) {
       formError.textContent = 'Пожалуйста, заполните обязательные поля в блоках выбора.';
       formError.classList.remove('hidden');
       setRsvpStep(2);
@@ -1763,7 +1771,7 @@
       attendance: attendance,
       guests: document.getElementById('guests').value,
       alcohol: alcohol,
-      food: food,
+      food: '',
       song: document.getElementById('song').value.trim(),
       comment: document.getElementById('comment').value.trim(),
       submittedAt: new Date().toISOString(),
@@ -1790,7 +1798,7 @@
       }
       form.reset();
       setGuestsValue(1);
-      syncFoodChoices();
+      updateSubmitLabel();
       setRsvpStep(1);
       openThankModal(attendance);
     } catch (err) {
