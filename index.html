@@ -416,12 +416,15 @@
       background-image:
         radial-gradient(ellipse 90% 50% at 50% 20%, rgba(167, 122, 98, 0.14), transparent 55%),
         radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201, 169, 98, 0.1), transparent 50%);
-      transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.65s;
+      transition: visibility 0s linear 3.3s;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
     #invite-splash.is-hidden {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
+      transition: opacity 0s, visibility 0s;
     }
     #invite-splash .splash-envelope {
       width: min(100%, 22rem);
@@ -431,18 +434,272 @@
       from { opacity: 0; transform: translateY(24px) scale(0.96); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
-    #invite-splash.is-leaving .splash-envelope {
-      animation: splashOut 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    .splash-envelope-scene {
+      perspective: 1300px;
+      perspective-origin: 50% 30%;
     }
-    @keyframes splashOut {
-      to { opacity: 0; transform: translateY(-16px) scale(1.03); }
+    .splash-envelope-pack {
+      position: relative;
+      width: 18.5rem;
+      height: 12.25rem;
+      margin-inline: auto;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
     }
-    .splash-flap {
+    @media (min-width: 640px) {
+      .splash-envelope-pack {
+        width: 21rem;
+        height: 14rem;
+      }
+    }
+    /* Мягкая тень-опора под конвертом */
+    .env-shadow {
+      position: absolute;
+      left: 7%;
+      right: 7%;
+      bottom: -8%;
+      height: 16%;
+      z-index: 0;
+      background: radial-gradient(ellipse at center, rgba(61, 53, 48, 0.26), transparent 72%);
+      filter: blur(7px);
+    }
+    /* Задняя стенка + внутренняя поверхность (видна при открытии) */
+    .env-back {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: 8px;
+      background: linear-gradient(168deg, #FBF6EE 0%, #F4EBDE 60%, #EFE5D6 100%);
+      box-shadow:
+        0 28px 60px rgba(61, 53, 48, 0.18),
+        0 10px 24px rgba(61, 53, 48, 0.09),
+        inset 0 0 0 1px rgba(167, 122, 98, 0.16);
+    }
+    /* Тёплая тень внутри сверху — глубина кармана */
+    .env-lining {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      border-radius: 8px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .env-lining::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 60%;
+      background: linear-gradient(180deg, rgba(139, 101, 80, 0.16), rgba(139, 101, 80, 0) 88%);
+    }
+    /* Письмо */
+    .env-letter {
+      position: absolute;
+      left: 50%;
+      top: 16%;
+      z-index: 3;
+      width: 72%;
+      padding: 0.85rem 0.8rem 1rem;
+      text-align: center;
+      transform: translateX(-50%) translateY(0);
+      transform-origin: 50% 100%;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FBF7F1 100%);
+      border-radius: 4px;
+      box-shadow: 0 3px 12px rgba(61, 53, 48, 0.12);
+      will-change: transform;
+    }
+    .env-letter::before {
+      content: '';
+      position: absolute;
+      inset: 5px;
+      border: 1px solid rgba(201, 169, 98, 0.28);
+      border-radius: 3px;
+      pointer-events: none;
+    }
+    /* Передние клапаны конверта (поверх письма) — классический ромбовый фальц */
+    .env-front {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      border-radius: 8px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .env-fold {
+      position: absolute;
+      inset: 0;
+    }
+    .env-fold--bottom {
+      clip-path: polygon(0 100%, 50% 50%, 100% 100%);
+      background: linear-gradient(to top, #ECE1D2 0%, #F2E9DB 100%);
+    }
+    .env-fold--left {
+      clip-path: polygon(0 0, 0 100%, 50% 50%);
+      background: linear-gradient(95deg, #EFE5D7 0%, #E7DCCB 100%);
+    }
+    .env-fold--right {
+      clip-path: polygon(100% 0, 100% 100%, 50% 50%);
+      background: linear-gradient(265deg, #EFE5D7 0%, #E7DCCB 100%);
+    }
+    /* Тонкие линии сгибов (диагонали к центру) */
+    .env-front::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cg stroke='%238B6550' stroke-opacity='0.18' stroke-width='0.5' fill='none'%3E%3Cpath d='M0 0 L50 50'/%3E%3Cpath d='M100 0 L50 50'/%3E%3Cpath d='M0 100 L50 50'/%3E%3Cpath d='M100 100 L50 50'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+    /* Верхний клапан, который открывается */
+    .env-lid-wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      z-index: 6;
       transform-origin: 50% 0%;
-      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      will-change: transform;
     }
-    #invite-splash.is-leaving .splash-flap {
-      transform: rotateX(-28deg);
+    .env-lid {
+      position: absolute;
+      inset: 0;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      background: linear-gradient(176deg, #F3EADC 0%, #ECE1D2 58%, #E3D8C8 100%);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      filter: drop-shadow(0 6px 8px rgba(61, 53, 48, 0.08));
+    }
+    .env-lid::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, transparent 52%);
+      pointer-events: none;
+    }
+    .env-seal {
+      position: absolute;
+      left: 50%;
+      bottom: -1.35rem;
+      z-index: 7;
+      width: 2.85rem;
+      height: 2.85rem;
+      margin-left: -1.425rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 1.05rem;
+      line-height: 1;
+      color: rgba(255, 251, 247, 0.96);
+      background: radial-gradient(circle at 32% 28%, #D4A48C 0%, #A77A62 44%, #8B6550 90%);
+      box-shadow:
+        0 5px 12px rgba(139, 101, 80, 0.42),
+        inset 0 2px 5px rgba(255, 255, 255, 0.3),
+        inset 0 -4px 8px rgba(62, 42, 32, 0.2);
+      transform: translateZ(1px);
+      will-change: transform, opacity;
+    }
+    .env-seal::before {
+      content: '';
+      position: absolute;
+      inset: 5px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: inset 0 0 7px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ===== Размеренная анимация открытия ===== */
+    #invite-splash.is-leaving {
+      animation: splashBackdropOut 3.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      pointer-events: none;
+    }
+    @keyframes splashBackdropOut {
+      0%, 62% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    /* 1. Печать ломается */
+    #invite-splash.is-leaving .env-seal {
+      animation: envSealBreak 0.7s cubic-bezier(0.34, 1.3, 0.5, 1) forwards;
+    }
+    @keyframes envSealBreak {
+      0% { transform: translateZ(1px) scale(1) rotate(0deg); opacity: 1; }
+      40% { transform: translateZ(1px) scale(1.12) rotate(-5deg); opacity: 1; }
+      100% { transform: translateZ(1px) scale(0.4) rotate(-16deg); opacity: 0; }
+    }
+    /* 2. Клапан неспешно откидывается */
+    #invite-splash.is-leaving .env-lid-wrap {
+      animation: envLidOpen 1.5s cubic-bezier(0.33, 0, 0.2, 1) 0.5s forwards;
+    }
+    @keyframes envLidOpen {
+      0% { transform: rotateX(0deg); z-index: 6; }
+      49% { z-index: 6; }
+      50% { transform: rotateX(-94deg); z-index: 0; }
+      100% { transform: rotateX(-172deg); z-index: 0; }
+    }
+    /* 3. Письмо плавно выходит */
+    #invite-splash.is-leaving .env-letter {
+      animation: envLetterRise 1.6s cubic-bezier(0.4, 0, 0.2, 1) 1.85s forwards;
+    }
+    @keyframes envLetterRise {
+      0% { transform: translateX(-50%) translateY(0) scale(1); }
+      100% { transform: translateX(-50%) translateY(-5.25rem) scale(1.04); }
+    }
+    /* 4. Весь конверт мягко уплывает */
+    #invite-splash.is-leaving .splash-envelope-pack {
+      animation: splashEnvelopeLeave 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes splashEnvelopeLeave {
+      0%, 78% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-3.25rem) scale(1.05); }
+    }
+    .splash-footer {
+      will-change: opacity, transform;
+    }
+    #invite-splash.is-leaving .splash-footer {
+      animation: splashFooterOut 0.42s ease forwards;
+    }
+    @keyframes splashFooterOut {
+      to { opacity: 0; transform: translateY(14px); }
+    }
+    #invite-splash:not(.is-hidden) ~ #hero .hero-reveal-wrap {
+      opacity: 0;
+      transform: translateY(28px) scale(0.985);
+    }
+    #invite-splash.is-leaving ~ #hero .hero-reveal-wrap {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition:
+        opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1) 2.2s,
+        transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 2.2s;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #invite-splash.is-leaving {
+        animation-duration: 1.4s !important;
+      }
+      #invite-splash.is-leaving .splash-envelope-pack {
+        animation-duration: 1.35s !important;
+      }
+      #invite-splash.is-leaving .env-seal {
+        animation-duration: 0.4s !important;
+      }
+      #invite-splash.is-leaving .env-lid-wrap {
+        animation-duration: 0.7s !important;
+        animation-delay: 0.25s !important;
+      }
+      #invite-splash.is-leaving .env-letter {
+        animation-duration: 0.7s !important;
+        animation-delay: 0.85s !important;
+      }
+      #invite-splash.is-leaving ~ #hero .hero-reveal-wrap {
+        transition-duration: 0.7s !important;
+        transition-delay: 1s !important;
+      }
     }
     body.splash-active {
       overflow: hidden;
@@ -676,27 +933,42 @@
 <!-- ========== ЭКРАН-ЗАСТАВКА ========== -->
 <div id="invite-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title">
   <div class="splash-envelope text-center">
-    <div class="relative mx-auto w-56 sm:w-64 mb-6" aria-hidden="true">
-      <div class="splash-flap absolute left-0 right-0 top-0 h-20 z-10 rounded-t-2xl bg-gradient-to-b from-mauve/25 to-mauve/10 border border-mauve/20 shadow-soft"></div>
-      <div class="relative pt-14 pb-8 px-6 rounded-2xl bg-white shadow-lift ring-1 ring-mauve/15">
-        <svg class="mx-auto text-mauve/70 mb-3" width="48" height="48" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="28" r="11" stroke="currentColor" stroke-width="1.3"/>
-          <circle cx="32" cy="28" r="11" stroke="currentColor" stroke-width="1.3"/>
-        </svg>
-        <p class="font-script text-3xl sm:text-4xl text-mauve leading-tight" id="splash-names"></p>
-        <p id="splash-date" class="mt-2 font-body text-sm text-ink/60"></p>
+    <div class="splash-envelope-scene mx-auto mb-7" aria-hidden="true">
+      <div class="splash-envelope-pack">
+        <div class="env-shadow"></div>
+        <div class="env-back"></div>
+        <div class="env-lining"></div>
+        <div class="env-letter">
+          <svg class="mx-auto text-mauve/70 mb-2" width="34" height="34" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="28" r="11" stroke="currentColor" stroke-width="1.3"/>
+            <circle cx="32" cy="28" r="11" stroke="currentColor" stroke-width="1.3"/>
+          </svg>
+          <p class="font-script text-2xl sm:text-3xl text-mauve leading-tight" id="splash-names"></p>
+          <p id="splash-date" class="mt-1 font-body text-xs sm:text-sm text-ink/60"></p>
+        </div>
+        <div class="env-front">
+          <span class="env-fold env-fold--bottom"></span>
+          <span class="env-fold env-fold--left"></span>
+          <span class="env-fold env-fold--right"></span>
+        </div>
+        <div class="env-lid-wrap">
+          <div class="env-lid"></div>
+          <div class="env-seal">♥</div>
+        </div>
       </div>
     </div>
-    <h2 id="splash-title" class="font-display text-xl sm:text-2xl lg:text-3xl text-ink mb-2">Для вас приглашение</h2>
-    <p class="text-ink/65 text-sm lg:text-base mb-6 max-w-xs lg:max-w-sm mx-auto">Откройте, чтобы увидеть дату, программу дня и форму ответа</p>
-    <button
-      type="button"
-      id="splash-open"
-      class="cta-pulse inline-flex items-center justify-center gap-2 px-8 py-3.5 lg:px-10 lg:py-4 rounded-full bg-mauve text-white font-semibold text-base lg:text-lg tracking-wide shadow-lift hover:bg-mauvedark hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
-    >
-      <span>Открыть приглашение</span>
-      <span class="text-lg leading-none" aria-hidden="true">♥</span>
-    </button>
+    <div class="splash-footer">
+      <h2 id="splash-title" class="font-display text-xl sm:text-2xl lg:text-3xl text-ink mb-2">Для вас приглашение</h2>
+      <p class="text-ink/65 text-sm lg:text-base mb-6 max-w-xs lg:max-w-sm mx-auto">Откройте, чтобы увидеть дату, программу дня и форму ответа</p>
+      <button
+        type="button"
+        id="splash-open"
+        class="cta-pulse inline-flex items-center justify-center gap-2 px-8 py-3.5 lg:px-10 lg:py-4 rounded-full bg-mauve text-white font-semibold text-base lg:text-lg tracking-wide shadow-lift hover:bg-mauvedark hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 touch-manipulation"
+      >
+        <span>Открыть приглашение</span>
+        <span class="text-lg leading-none" aria-hidden="true">♥</span>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -705,7 +977,7 @@
   <div class="hero-scroll-wash absolute inset-0 bg-gradient-to-b from-mauve/10 via-transparent to-mauve/5 pointer-events-none" aria-hidden="true"></div>
   <div id="hearts-container" class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true"></div>
 
-  <div class="relative z-10 max-w-6xl xl:max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center">
+  <div class="hero-reveal-wrap relative z-10 max-w-6xl xl:max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center">
     <!-- Текстовая колонка -->
     <div class="text-center lg:text-left order-2 lg:order-1">
         <span class="inline-block px-5 py-2 rounded-full bg-mauve text-white text-xs md:text-sm lg:text-base font-semibold tracking-[0.2em] uppercase shadow-soft hover:scale-[1.02] transition-transform">
@@ -1215,8 +1487,27 @@
     }
 
     openBtn.addEventListener('click', function () {
+      if (splash.classList.contains('is-leaving')) return;
+
+      openBtn.disabled = true;
       splash.classList.add('is-leaving');
-      window.setTimeout(hideSplash, 520);
+
+      let finished = false;
+      function finishLeaving() {
+        if (finished) return;
+        finished = true;
+        splash.removeEventListener('animationend', onSplashAnimEnd);
+        hideSplash();
+      }
+
+      function onSplashAnimEnd(e) {
+        if (e.target === splash && e.animationName === 'splashBackdropOut') {
+          finishLeaving();
+        }
+      }
+
+      splash.addEventListener('animationend', onSplashAnimEnd);
+      window.setTimeout(finishLeaving, 3400);
     });
   }
 
